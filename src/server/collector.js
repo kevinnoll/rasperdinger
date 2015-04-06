@@ -64,6 +64,41 @@ module.exports = {
 		});
 	},
 
+	collectMatch : function(client, matchId){
+		var https = require('https');
+
+		var that = this;
+		var options = {
+			method: 'GET',
+			hostname: 'euw.api.pvp.net',
+			path: '/api/lol/euw/v2.2/match/' + matchId + '?includeTimeline=true&api_key=08d1d2cc-79c5-4dc2-9aa1-50b000cfcd20'
+		};
+		this.log.info(options.hostname+options.path);
+
+		var callback = function(response) {
+		  var str = '';
+		  
+		  //another chunk of data has been recieved, so append it to `str`
+		  response.on('data', function (chunk) {
+		    str += chunk;
+		  });
+
+		  //the whole response has been recieved, so we just print it out here
+		  response.on('end', function () {
+		    var oData = JSON.parse(str);
+			that.log.info("matchdata completed");
+			that.persistMatchToDB(client, oData);
+		  });
+		}
+		var req = https.request(options, callback);
+		req.end();
+
+		req.on('error', function(e) {
+  			this.log.error(e);
+		});
+		this.log.info("request sent");
+	},
+
 		}*/
 
 	},
