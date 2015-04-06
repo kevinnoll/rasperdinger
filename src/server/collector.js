@@ -139,6 +139,15 @@ module.exports = {
 		}*/
 	},
 
+	createMatchObject : function(oData){
+		var oMatch = {};
+		oMatch.id = oData.matchId;
+		oMatch.region = oData.region;
+		oMatch.matchCreation = oData.matchCreation;
+		oMatch.matchDuration = oData.matchDuration;
+		return oMatch;
+	},
+
 	},
 
 	collectKeys : function(timeToCollect){
