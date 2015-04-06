@@ -171,6 +171,64 @@ module.exports = {
 	},
 
 	createParticipantObject : function(oData){
+		var oParticipants = {};
+		for(var key in oData.participants){
+			var node = oData.participants[key];
+			oParticipants[node.participantId] = {};
+			oParticipants[node.participantId].id = parseInt(oData.matchId + "" + node.participantId);
+			oParticipants[node.participantId].participantId = node.participantId;
+			oParticipants[node.participantId].spell1Id = node.spell1Id;
+			oParticipants[node.participantId].spell2Id = node.spell1Id;
+			oParticipants[node.participantId].championId = node.championId;
+			oParticipants[node.participantId].highestTier = node.highestTier;
+			oParticipants[node.participantId].lane = node.lane;
+			oParticipants[node.participantId].winner = node.stats.winner;
+			oParticipants[node.participantId].champLevel = node.stats.champLevel;
+			oParticipants[node.participantId].item0 = node.stats.item0;
+			oParticipants[node.participantId].item1 = node.stats.item1;
+			oParticipants[node.participantId].item2 = node.stats.item2;
+			oParticipants[node.participantId].item3 = node.stats.item3;
+			oParticipants[node.participantId].item4 = node.stats.item4;
+			oParticipants[node.participantId].item5 = node.stats.item5;
+			oParticipants[node.participantId].item6 = node.stats.item6;
+			oParticipants[node.participantId].kills = node.stats.kills;
+			oParticipants[node.participantId].doubleKills = node.stats.doubleKills;
+			oParticipants[node.participantId].tripleKills = node.stats.tripleKills;
+			oParticipants[node.participantId].quadraKills = node.stats.quadraKills;
+			oParticipants[node.participantId].pentaKills = node.stats.pentaKills;
+			oParticipants[node.participantId].largestKillingSpree = node.stats.largestKillingSpree;
+			oParticipants[node.participantId].deaths = node.stats.deaths;
+			oParticipants[node.participantId].assists = node.stats.assists;
+			oParticipants[node.participantId].totalHeal = node.stats.totalHeal;
+			oParticipants[node.participantId].totalDamageDealt = node.stats.totalDamageDealt
+			oParticipants[node.participantId].totalDamageDealtToChampions = node.stats.totalDamageDealtToChampions;
+			oParticipants[node.participantId].firstBloodKill = node.stats.firstBloodKill;
+			oParticipants[node.participantId].firstBloodAssist = node.stats.firstBloodAssist;
+			oParticipants[node.participantId].minionsKilled = node.stats.minionsKilled;
+			oParticipants[node.participantId].goldEarned = node.stats.goldEarned;
+			oParticipants[node.participantId].wardsPlaced = node.stats.wardsPlaced;
+			oParticipants[node.participantId].wardsKilled = node.stats.wardsKilled;
+			oParticipants[node.participantId].totalTimeCrowdControlDealt = node.stats.totalTimeCrowdControlDealt;
+
+			//TEAM
+			oParticipants[node.participantId].team = parseInt(oData.matchId + "" + node.teamId);
+
+			//SKILLORDER
+			var aSkillOrder = [];
+			for(var i = 0; i < oData.timeline.frames.length; i++){
+				var events = oData.timeline.frames[i].events;
+				if(events){
+					for(var eventKey in events){
+						if(events[eventKey].eventType === "SKILL_LEVEL_UP" && events[eventKey].participantId === node.participantId){
+							aSkillOrder.push(events[eventKey].skillSlot);
+						}
+					}
+				}
+			}
+			oParticipants[node.participantId].skillorder = aSkillOrder.toString();
+		}
+		this.log.info(oParticipants);
+		return oParticipants;
 	},
 
 	collectKeys : function(timeToCollect){
