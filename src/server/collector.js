@@ -50,14 +50,12 @@ module.exports = {
 				selectIDQuery.on('row', function(row) {
 					if(row.id){
 						that.collectMatch(client, row.id);
-					} else {
-						that.log.info("currently no match ids to check")
-						that.commitDB(client, that);
 					}
 				});
 				selectIDQuery.on('end', function(result) {
 					if(result.rowCount===0){
-						that.log.info("currently no match ids to check")					
+						that.log.info("currently no match ids to check")	
+						client.end();				
 					}
 				})
 				selectIDQuery.on('error', function() {
@@ -346,7 +344,6 @@ module.exports = {
 	
 	commitDB: function(client, that){
 		client.query('COMMIT', function(){
-			
 			client.end();
 		});
 	},
