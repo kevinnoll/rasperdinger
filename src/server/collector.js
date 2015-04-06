@@ -36,9 +36,7 @@ module.exports = {
 		var conString = "pg://thresh:thresh@localhost:5432/threshDB";
 		var pg = require("pg");
 		var client = new pg.Client(conString);
-		//that.connectToDB();
-		// SOLUTION A: vorher alle keys auslesen und vorhandene aus den neuen rausfiltern
-		// SOLUTION B: jeden neuen Key zunaechst ueberpruefen
+		
 		client.connect(function(err) {
 			if(err) {
 				return that.log.error('could not connect to postgres', err);
@@ -54,6 +52,7 @@ module.exports = {
 						that.collectMatch(client, row.id);
 					} else {
 						that.log.info("currently no match ids to check")
+						that.commitDB();
 					}
 				});
 				selectIDQuery.on('end', function(result) {
@@ -347,7 +346,8 @@ module.exports = {
 	
 	commitDB: function(client, that){
 		client.query('COMMIT', function(){
-			client.end.bind(client);
+			
+			client.end();
 		});
 	},
 
