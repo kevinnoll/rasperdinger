@@ -52,7 +52,7 @@ module.exports = {
 						that.collectMatch(client, row.id);
 					} else {
 						that.log.info("currently no match ids to check")
-						that.commitDB();
+						that.commitDB(client, that);
 					}
 				});
 				selectIDQuery.on('end', function(result) {
