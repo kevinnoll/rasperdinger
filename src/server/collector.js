@@ -53,9 +53,14 @@ module.exports = {
 					if(row.id){
 						that.collectMatch(client, row.id);
 					} else {
-						that.log.error("collected id not existing")
+						that.log.info("currently no match ids to check")
 					}
 				});
+				selectIDQuery.on('end', function(result) {
+					if(result.rowCount===0){
+						that.log.info("currently no match ids to check")					
+					}
+				})
 				selectIDQuery.on('error', function() {
 					that.log.error(current + " cannot be inserted");
 					return that.rollbackDB(client);
@@ -73,7 +78,6 @@ module.exports = {
 			hostname: 'euw.api.pvp.net',
 			path: '/api/lol/euw/v2.2/match/' + matchId + '?includeTimeline=true&api_key=08d1d2cc-79c5-4dc2-9aa1-50b000cfcd20'
 		};
-		this.log.info(options.hostname+options.path);
 
 		var callback = function(response) {
 		  var str = '';
@@ -86,7 +90,6 @@ module.exports = {
 		  //the whole response has been recieved, so we just print it out here
 		  response.on('end', function () {
 		    var oData = JSON.parse(str);
-			that.log.info("matchdata completed");
 			that.persistMatchToDB(client, oData);
 		  });
 		}
@@ -96,7 +99,6 @@ module.exports = {
 		req.on('error', function(e) {
   			this.log.error(e);
 		});
-		this.log.info("request sent");
 	},
 
 	persistMatchToDB : function(client, oData){
@@ -105,39 +107,70 @@ module.exports = {
 		var oMatch = this.createMatchObject(oData);
 		var oTeams = this.createTeamObject(oData);
 		var oParticipants = this.createParticipantObject(oData);
+		that.log.info("start match insertion...");
 
-
-
-		/*for(var keyId in aInnerIds) {
-			that.log.info(keyId+"="+aInnerIds[keyId]);
-			var selectIDQuery = client.query('SELECT COUNT(id) AS idcount FROM \"MatchSelection\" WHERE id = $1', [aInnerIds[keyId]]);
-			var counter = 0;
-			selectIDQuery.on('row', function(row) {
-				var current = this.values[0];
-				if(row.idcount === "0"){
-					client.query('INSERT INTO \"MatchSelection\" (id, checked) VALUES ($1, false)', [current], function(err, result) {
-						if(err) {
-							that.log.error("aint no shit going here on insert :" +[current]+", "+err);
-							return that.rollbackDB(client);
-						} else {
-							that.log.info("match id inserted: "+ current);
-						}
-					});
-				} else {
-					that.log.info("match id already exists: "+ current);
-				}
-				
-				counter++;
-				if(counter>=aInnerIds.length){
-					that.commitDB(client, that);
-				} 
-			});
-			selectIDQuery.on('error', function() {
-				that.log.error(current + " cannot be inserted");
+		client.query('INSERT INTO \"Match\" (id, region, \"matchDuration\", "\matchCreation\") VALUES ($1, $2, $3, $4)', [oMatch.id, oMatch.region, oMatch.matchDuration, oMatch.matchCreation], function(err, result) {
+			if(err) {
+				that.log.error("aint no shit going here on insert :" +[oMatch.id]+", "+err);
 				return that.rollbackDB(client);
-			});
-		}*/
+			} else {
+				that.persistTeams(that, oTeams, oParticipants, oMatch.id, client);
+			}
+		});
 	},
+	
+	persistTeams:function(that, oTeams, oParticipants, matchId, client){
+		var teamCount = 0;
+		for(var key in oTeams){
+			var oTeam = oTeams[key];
+			client.query('INSERT INTO \"Team\" (id, \"teamId\", winner, \"firstBlood\", \"firstBaron\", \"firstDragon\", \"towerKills\", \"baronKills\", \"dragonKills\", ban1, ban2, ban3, match) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)',
+			[oTeam.id, oTeam.teamId, oTeam.winner, oTeam.firstBlood, oTeam.firstBaron, oTeam.firstDragon, oTeam.towerKills, oTeam.baronKills, oTeam.dragonKills, oTeam.ban1, oTeam.ban2, oTeam.ban3, oTeam.match], function(err, result) {
+				var current = this.values[0];
+				if(err) {
+					that.log.error("[TEAM] aint no shit going here on insert team :" +[current]+", "+err);
+					return that.rollbackDB(client);
+				} else {
+					teamCount++;
+					if(teamCount>=2){
+						that.persistParticipants(that, oParticipants, matchId,  client);			
+					}
+				}
+			});
+		}
+	},
+	
+	persistParticipants: function(that, oParticipants, matchId, client) {
+		var participantCount = 0;
+		for(var key in oParticipants){
+			var oP = oParticipants[key];
+			client.query('INSERT INTO \"Participant\" (id, \"participantId\", \"spell1Id\", \"spell2Id\", \"championId\", \"highestTier\", \"lane\", \"winner\", \"champLevel\", item0, item1, item2, item3, item4, item5, item6, kills, \"doubleKills\", \"tripleKills\", \"quadraKills\", \"pentaKills\", \"largestKillingSpree\", deaths, assists, \"totalHeal\", \"firstBloodKill\", \"firstBloodAssist\", \"minionsKilled\", \"goldEarned\", \"wardsPlaced\", \"wardsKilled\", \"totalTimeCrowdControlDealt\", \"totalDamageDealt\", \"totalDamageDealtToChampions\", team, skillorder) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36)',
+			[oP.id, oP.participantId, oP.spell1Id, oP.spell2Id, oP.championId, oP.highestTier, oP.lane, oP.winner, oP.champLevel, oP.item0, oP.item1, oP.item2, oP.item3, oP.item4, oP.item5, oP.item6, oP.kills, oP.doubleKills, oP.tripleKills, oP.quadraKills, oP.pentaKills, oP.largestKillingSpree, oP.deaths, oP.assists, oP.totalHeal, oP.firstBloodKill, oP.firstBloodAssist, oP.minionsKilled, oP.goldEarned, oP.wardsPlaced, oP.wardsKilled, oP.totalTimeCrowdControlDealt, oP.totalDamageDealt, oP.totalDamageDealtToChampions, oP.team, oP.skillorder], function(err, result) {
+				var current = this.values[0];
+				if(err) {
+					that.log.error("[PARTICIPANT] aint no shit going here on insert team :" +[current]+", "+err);
+					return that.rollbackDB(client);
+				} else {
+					participantCount++;
+					if(participantCount>=10){
+						that.updateMatchChecked(that, matchId, client);				
+					}
+				}
+			});
+		}
+	},
+	
+	updateMatchChecked: function(that, matchId, client){
+		client.query('UPDATE \"MatchSelection\" SET checked = true WHERE id = $1', [matchId], function(err, result) {
+			var current = this.values[0];
+			if(err) {
+				that.log.error("[MATCH_UPDATE] aint no shit going here on update match :" +[current]+", "+err);
+				return that.rollbackDB(client);
+			} else {
+				that.log.info("...done");
+				that.commitDB(client, that);
+			}
+		});
+	}, 
 
 	createMatchObject : function(oData){
 		var oMatch = {};
@@ -180,8 +213,8 @@ module.exports = {
 			oParticipants[node.participantId].spell1Id = node.spell1Id;
 			oParticipants[node.participantId].spell2Id = node.spell1Id;
 			oParticipants[node.participantId].championId = node.championId;
-			oParticipants[node.participantId].highestTier = node.highestTier;
-			oParticipants[node.participantId].lane = node.lane;
+			oParticipants[node.participantId].highestTier = node.highestAchievedSeasonTier;
+			oParticipants[node.participantId].lane = node.timeline.lane;
 			oParticipants[node.participantId].winner = node.stats.winner;
 			oParticipants[node.participantId].champLevel = node.stats.champLevel;
 			oParticipants[node.participantId].item0 = node.stats.item0;
@@ -227,7 +260,6 @@ module.exports = {
 			}
 			oParticipants[node.participantId].skillorder = aSkillOrder.toString();
 		}
-		this.log.info(oParticipants);
 		return oParticipants;
 	},
 
@@ -241,7 +273,6 @@ module.exports = {
 			hostname: 'euw.api.pvp.net',
 			path: '/api/lol/euw/v4.1/game/ids?beginDate=' + timeToCollect + '&api_key=08d1d2cc-79c5-4dc2-9aa1-50b000cfcd20'
 		};
-		this.log.info(options.hostname +options.path);
 
 		var callback = function(response) {
 		  var str = '';
@@ -255,7 +286,7 @@ module.exports = {
 		  response.on('end', function () {
 		    var aResponse = JSON.parse(str);
 		    that.persistIdsToDB(aResponse);
-		    that.log.info(aResponse);
+		    that.log.info("...key collection done");
 		  });
 		}
 		var req = https.request(options, callback);
@@ -285,7 +316,6 @@ module.exports = {
 					return that.rollbackDB(client);
 				}
 				for(var keyId in aInnerIds) {
-					that.log.info(keyId+"="+aInnerIds[keyId]);
 					var selectIDQuery = client.query('SELECT COUNT(id) AS idcount FROM \"MatchSelection\" WHERE id = $1', [aInnerIds[keyId]]);
 					var counter = 0;
 					selectIDQuery.on('row', function(row) {
@@ -295,12 +325,10 @@ module.exports = {
 								if(err) {
 									that.log.error("aint no shit going here on insert :" +[current]+", "+err);
 									return that.rollbackDB(client);
-								} else {
-									that.log.info("match id inserted: "+ current);
 								}
 							});
 						} else {
-							that.log.info("match id already exists: "+ current);
+							that.log.debug("match id already exists: "+ current);
 						}
 						
 						counter++;
@@ -319,43 +347,9 @@ module.exports = {
 	
 	commitDB: function(client, that){
 		client.query('COMMIT', function(){
-			that.log.info("connection is committed");
 			client.end.bind(client);
 		});
 	},
-
-	/*collectMatches : function(){
-		var https = require('https');
-
-		var that = this;
-		var options = {
-			method: 'GET',
-			hostname: 'global.api.pvp.net',
-			path: '/api/lol/euw/v2.2/match/1778838158?api_key=08d1d2cc-79c5-4dc2-9aa1-50b000cfcd20'
-		};
-
-		var callback = function(response) {
-		  var str = '';
-		  
-		  //another chunk of data has been recieved, so append it to `str`
-		  response.on('data', function (chunk) {
-		    str += chunk;
-		  });
-
-		  //the whole response has been recieved, so we just print it out here
-		  response.on('end', function () {
-		    that.log.info(str);
-		    that.log.info("data completed");
-		  });
-		}
-		var req = https.request(options, callback)
-		req.end();
-
-		req.on('error', function(e) {
-  			this.log.error(e);
-		});
-		this.log.info("request sent");
-	},*/
 
 	connectToDB : function(){
 		var conString = "pg://thresh:thresh@localhost:5432/threshDB";
