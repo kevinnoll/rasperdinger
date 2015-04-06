@@ -31,6 +31,39 @@ module.exports = {
 
 	},
 
+	initDataCollection : function(){
+		var that = this;
+		var conString = "pg://thresh:thresh@localhost:5432/threshDB";
+		var pg = require("pg");
+		var client = new pg.Client(conString);
+		//that.connectToDB();
+		// SOLUTION A: vorher alle keys auslesen und vorhandene aus den neuen rausfiltern
+		// SOLUTION B: jeden neuen Key zunaechst ueberpruefen
+		client.connect(function(err) {
+			if(err) {
+				return that.log.error('could not connect to postgres', err);
+			}
+			client.query('BEGIN', function(err, result) {
+				if(err) {
+					that.log.error("BEGIN not working...");
+					return that.rollbackDB(client);
+				}
+				var selectIDQuery = client.query('SELECT id FROM \"MatchSelection\" WHERE checked = false LIMIT 1');
+				selectIDQuery.on('row', function(row) {
+					if(row.id){
+						that.collectMatch(client, row.id);
+					} else {
+						that.log.error("collected id not existing")
+					}
+				});
+				selectIDQuery.on('error', function() {
+					that.log.error(current + " cannot be inserted");
+					return that.rollbackDB(client);
+				});
+			});
+		});
+	},
+
 		}*/
 
 	},
