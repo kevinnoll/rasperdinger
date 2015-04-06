@@ -148,6 +148,29 @@ module.exports = {
 		return oMatch;
 	},
 
+	createTeamObject : function(oData){
+		var oTeams = {};
+		for(var key in oData.teams){
+			var node = oData.teams[key];
+			oTeams[node.teamId] = {};
+			oTeams[node.teamId].id = parseInt(oData.matchId + "" + node.teamId);
+			oTeams[node.teamId].teamId = node.teamId;
+			oTeams[node.teamId].winner = node.winner;
+			oTeams[node.teamId].firstBlood = node.firstBlood;
+			oTeams[node.teamId].firstDragon = node.firstDragon;
+			oTeams[node.teamId].firstBaron = node.firstBaron;
+			oTeams[node.teamId].towerKills = node.towerKills;
+			oTeams[node.teamId].baronKills = node.baronKills;
+			oTeams[node.teamId].dragonKills = node.dragonKills;
+			oTeams[node.teamId].ban1 = (node.bans[0]) ? node.bans[0].championId : 0; 
+			oTeams[node.teamId].ban2 = (node.bans[1]) ? node.bans[1].championId : 0; 
+			oTeams[node.teamId].ban3 = (node.bans[2]) ? node.bans[2].championId : 0; 
+			oTeams[node.teamId].match = oData.matchId;
+		}
+		return oTeams;
+	},
+
+	createParticipantObject : function(oData){
 	},
 
 	collectKeys : function(timeToCollect){
