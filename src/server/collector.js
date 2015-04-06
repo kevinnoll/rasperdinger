@@ -99,7 +99,45 @@ module.exports = {
 		this.log.info("request sent");
 	},
 
+	persistMatchToDB : function(client, oData){
+		var that = this;
+
+		var oMatch = this.createMatchObject(oData);
+		var oTeams = this.createTeamObject(oData);
+		var oParticipants = this.createParticipantObject(oData);
+
+
+
+		/*for(var keyId in aInnerIds) {
+			that.log.info(keyId+"="+aInnerIds[keyId]);
+			var selectIDQuery = client.query('SELECT COUNT(id) AS idcount FROM \"MatchSelection\" WHERE id = $1', [aInnerIds[keyId]]);
+			var counter = 0;
+			selectIDQuery.on('row', function(row) {
+				var current = this.values[0];
+				if(row.idcount === "0"){
+					client.query('INSERT INTO \"MatchSelection\" (id, checked) VALUES ($1, false)', [current], function(err, result) {
+						if(err) {
+							that.log.error("aint no shit going here on insert :" +[current]+", "+err);
+							return that.rollbackDB(client);
+						} else {
+							that.log.info("match id inserted: "+ current);
+						}
+					});
+				} else {
+					that.log.info("match id already exists: "+ current);
+				}
+				
+				counter++;
+				if(counter>=aInnerIds.length){
+					that.commitDB(client, that);
+				} 
+			});
+			selectIDQuery.on('error', function() {
+				that.log.error(current + " cannot be inserted");
+				return that.rollbackDB(client);
+			});
 		}*/
+	},
 
 	},
 
