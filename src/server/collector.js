@@ -24,11 +24,13 @@ module.exports = {
 			startTime.setTime(startTime.getTime() + 300000)
 			that.collectKeys(startTime.getTime() / 1000);
 		},300000); // 300000 for every 5 minutes
-		/*while(true){
-			//IDs first
-			if() // if now is 11:05:11 --> set time to 10:05:00 (minus 1 hour) and execute the request
-			this.collectKeys();
-			this.collectMatches();
+		
+		setInterval(function(){
+			that.initDataCollection();
+		},3000); // 3000 for every 3 seconds
+
+	},
+
 		}*/
 
 	},
