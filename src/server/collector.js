@@ -253,12 +253,12 @@ module.exports = {
 
 		  //the whole response has been recieved, so we just print it out here
 		  response.on('end', function () {
-		    var aResponse = JSON.parse(str)
+		    var aResponse = JSON.parse(str);
 		    that.persistIdsToDB(aResponse);
 		    that.log.info(aResponse);
 		  });
 		}
-		var req = https.request(options, callback)
+		var req = https.request(options, callback);
 		req.end();
 
 		req.on('error', function(e) {
@@ -324,7 +324,7 @@ module.exports = {
 		});
 	},
 
-	collectMatches : function(){
+	/*collectMatches : function(){
 		var https = require('https');
 
 		var that = this;
@@ -355,7 +355,7 @@ module.exports = {
   			this.log.error(e);
 		});
 		this.log.info("request sent");
-	},
+	},*/
 
 	connectToDB : function(){
 		var conString = "pg://thresh:thresh@localhost:5432/threshDB";
