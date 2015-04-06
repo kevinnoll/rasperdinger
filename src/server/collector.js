@@ -57,7 +57,7 @@ module.exports = {
 		  response.on('end', function () {
 		    var aResponse = JSON.parse(str)
 		    that.persistIdsToDB(aResponse);
-		    that.log.info(str);
+		    that.log.info(aResponse);
 		  });
 		}
 		var req = https.request(options, callback)
@@ -69,7 +69,61 @@ module.exports = {
 	},
 
 	persistIdsToDB : function(aIds){
-
+		var that = this;
+		var conString = "pg://thresh:thresh@localhost:5432/threshDB";
+		var pg = require("pg");
+		var client = new pg.Client(conString);
+		//that.connectToDB();
+		// SOLUTION A: vorher alle keys auslesen und vorhandene aus den neuen rausfiltern
+		// SOLUTION B: jeden neuen Key zunaechst ueberpruefen
+		client.connect(function(err) {
+			var aInnerIds = aIds;
+			if(err) {
+				return that.log.error('could not connect to postgres', err);
+			}
+			client.query('BEGIN', function(err, result) {
+				if(err) {
+					that.log.error("BEGIN not working...");
+					return that.rollbackDB(client);
+				}
+				for(var keyId in aInnerIds) {
+					that.log.info(keyId+"="+aInnerIds[keyId]);
+					var selectIDQuery = client.query('SELECT COUNT(id) AS idcount FROM \"MatchSelection\" WHERE id = $1', [aInnerIds[keyId]]);
+					var counter = 0;
+					selectIDQuery.on('row', function(row) {
+						var current = this.values[0];
+						if(row.idcount === "0"){
+							client.query('INSERT INTO \"MatchSelection\" (id, checked) VALUES ($1, false)', [current], function(err, result) {
+								if(err) {
+									that.log.error("aint no shit going here on insert :" +[current]+", "+err);
+									return that.rollbackDB(client);
+								} else {
+									that.log.info("match id inserted: "+ current);
+								}
+							});
+						} else {
+							that.log.info("match id already exists: "+ current);
+						}
+						
+						counter++;
+						if(counter>=aInnerIds.length){
+							that.commitDB(client, that);
+						} 
+					});
+					selectIDQuery.on('error', function() {
+						that.log.error(current + " cannot be inserted");
+						return that.rollbackDB(client);
+					});
+				}
+			});
+		});
+	},
+	
+	commitDB: function(client, that){
+		client.query('COMMIT', function(){
+			that.log.info("connection is committed");
+			client.end.bind(client);
+		});
 	},
 
 	collectMatches : function(){
@@ -111,5 +165,11 @@ module.exports = {
 		this.client = new this.pg.Client(conString);
 		this.client.connect();
 		this.log.info("Connected to DB")
+	},
+	
+	rollbackDB : function(client) {
+		client.query('ROLLBACK', function() {
+			client.end();
+		});
 	}
 }
