@@ -27,7 +27,7 @@ module.exports = {
 		setInterval(function(){
 			startTime.setTime(startTime.getTime() + 300000);
 			for(var regionKey in regions){
-				this.collectKeys(regions[regionKey], startTime.getTime() / 1000);
+				that.collectKeys(regions[regionKey], startTime.getTime() / 1000);
 			}
 		},300000); // 300000 for every 5 minutes
 		
