@@ -18,11 +18,17 @@ module.exports = {
 		var yesterdayMinusOneHour = new Date(yesterday.getTime() - 360000); //subtract one hour
 		var startTime = new Date(yesterdayMinusOneHour.getTime());
 		startTime.setHours(yesterdayMinusOneHour.getHours(), (5*Math.floor(yesterdayMinusOneHour.getMinutes()/5)), 0, 0);
-		this.collectKeys(startTime.getTime() / 1000);
+
+		var regions = ['br', 'euw', 'na', 'oce', 'ru'];
+		for(var regionKey in regions){
+			this.collectKeys(regions[regionKey], startTime.getTime() / 1000);
+		}
 
 		setInterval(function(){
-			startTime.setTime(startTime.getTime() + 300000)
-			that.collectKeys(startTime.getTime() / 1000);
+			startTime.setTime(startTime.getTime() + 300000);
+			for(var regionKey in regions){
+				this.collectKeys(regions[regionKey], startTime.getTime() / 1000);
+			}
 		},300000); // 300000 for every 5 minutes
 		
 		setInterval(function(){
@@ -46,10 +52,10 @@ module.exports = {
 					that.log.error("BEGIN not working...");
 					return that.rollbackDB(client);
 				}
-				var selectIDQuery = client.query('SELECT id FROM \"MatchSelection\" WHERE checked = false LIMIT 1');
+				var selectIDQuery = client.query('SELECT id,region FROM \"MatchSelection\" WHERE checked = false LIMIT 1');
 				selectIDQuery.on('row', function(row) {
 					if(row.id){
-						that.collectMatch(client, row.id);
+						that.collectMatch(client, row.id, row.region);
 					}
 				});
 				selectIDQuery.on('end', function(result) {
@@ -66,14 +72,14 @@ module.exports = {
 		});
 	},
 
-	collectMatch : function(client, matchId){
+	collectMatch : function(client, matchId, region){
 		var https = require('https');
 
 		var that = this;
 		var options = {
 			method: 'GET',
-			hostname: 'euw.api.pvp.net',
-			path: '/api/lol/euw/v2.2/match/' + matchId + '?includeTimeline=true&api_key=08d1d2cc-79c5-4dc2-9aa1-50b000cfcd20'
+			hostname: region+'.api.pvp.net',
+			path: '/api/lol/'+region+'/v2.2/match/' + matchId + '?includeTimeline=true&api_key=08d1d2cc-79c5-4dc2-9aa1-50b000cfcd20'
 		};
 
 		var callback = function(response) {
@@ -104,7 +110,7 @@ module.exports = {
 		var oMatch = this.createMatchObject(oData);
 		var oTeams = this.createTeamObject(oData);
 		var oParticipants = this.createParticipantObject(oData);
-		that.log.info("start match insertion...");
+		that.log.info("start " + oData.region + "-match insertion...");
 
 		client.query('INSERT INTO \"Match\" (id, region, \"matchDuration\", "\matchCreation\") VALUES ($1, $2, $3, $4)', [oMatch.id, oMatch.region, oMatch.matchDuration, oMatch.matchCreation], function(err, result) {
 			if(err) {
@@ -260,15 +266,15 @@ module.exports = {
 		return oParticipants;
 	},
 
-	collectKeys : function(timeToCollect){
-		this.log.info("collecting keys...");
+	collectKeys : function(region, timeToCollect){
+		this.log.info("collecting keys for " + region + "...");
 		var https = require('https');
 
 		var that = this;
 		var options = {
 			method: 'GET',
-			hostname: 'euw.api.pvp.net',
-			path: '/api/lol/euw/v4.1/game/ids?beginDate=' + timeToCollect + '&api_key=08d1d2cc-79c5-4dc2-9aa1-50b000cfcd20'
+			hostname: region + '.api.pvp.net',
+			path: '/api/lol/' + region + '/v4.1/game/ids?beginDate=' + timeToCollect + '&api_key=08d1d2cc-79c5-4dc2-9aa1-50b000cfcd20'
 		};
 
 		var callback = function(response) {
@@ -282,7 +288,7 @@ module.exports = {
 		  //the whole response has been recieved, so we just print it out here
 		  response.on('end', function () {
 		    var aResponse = JSON.parse(str);
-		    that.persistIdsToDB(aResponse);
+		    that.persistIdsToDB(aResponse, region);
 		    that.log.info("...key collection done");
 		  });
 		}
@@ -294,7 +300,7 @@ module.exports = {
 		});
 	},
 
-	persistIdsToDB : function(aIds){
+	persistIdsToDB : function(aIds, region){
 		var that = this;
 		var conString = "pg://thresh:thresh@localhost:5432/threshDB";
 		var pg = require("pg");
@@ -304,6 +310,7 @@ module.exports = {
 		// SOLUTION B: jeden neuen Key zunaechst ueberpruefen
 		client.connect(function(err) {
 			var aInnerIds = aIds;
+			var innerRegion = region;
 			if(err) {
 				return that.log.error('could not connect to postgres', err);
 			}
@@ -318,7 +325,7 @@ module.exports = {
 					selectIDQuery.on('row', function(row) {
 						var current = this.values[0];
 						if(row.idcount === "0"){
-							client.query('INSERT INTO \"MatchSelection\" (id, checked) VALUES ($1, false)', [current], function(err, result) {
+							client.query('INSERT INTO \"MatchSelection\" (id, checked, region) VALUES ($1, false, $2)', [current, innerRegion], function(err, result) {
 								if(err) {
 									that.log.error("aint no shit going here on insert :" +[current]+", "+err);
 									return that.rollbackDB(client);
