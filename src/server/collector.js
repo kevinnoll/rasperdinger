@@ -33,11 +33,12 @@ module.exports = {
 		
 		setInterval(function(){
 			that.initDataCollection();
-		},3000); // 3000 for every 3 seconds
+		},5000); // 3000 for every 3 seconds
 
 	},
 
 	initDataCollection : function(){
+
 		var that = this;
 		var conString = "pg://thresh:thresh@localhost:5432/threshDB";
 		var pg = require("pg");
@@ -56,6 +57,7 @@ module.exports = {
 				selectIDQuery.on('row', function(row) {
 					if(row.id){
 						that.collectMatch(client, row.id, row.region);
+						that.log.info("start " + row.region + "-match insertion...");
 					}
 				});
 				selectIDQuery.on('end', function(result) {
@@ -110,7 +112,6 @@ module.exports = {
 		var oMatch = this.createMatchObject(oData);
 		var oTeams = this.createTeamObject(oData);
 		var oParticipants = this.createParticipantObject(oData);
-		that.log.info("start " + oData.region + "-match insertion...");
 
 		client.query('INSERT INTO \"Match\" (id, region, \"matchDuration\", "\matchCreation\") VALUES ($1, $2, $3, $4)', [oMatch.id, oMatch.region, oMatch.matchDuration, oMatch.matchCreation], function(err, result) {
 			if(err) {
