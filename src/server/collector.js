@@ -198,9 +198,9 @@ module.exports = {
 			oTeams[node.teamId].towerKills = node.towerKills;
 			oTeams[node.teamId].baronKills = node.baronKills;
 			oTeams[node.teamId].dragonKills = node.dragonKills;
-			oTeams[node.teamId].ban1 = (node.bans[0]) ? node.bans[0].championId : 0; 
-			oTeams[node.teamId].ban2 = (node.bans[1]) ? node.bans[1].championId : 0; 
-			oTeams[node.teamId].ban3 = (node.bans[2]) ? node.bans[2].championId : 0; 
+			oTeams[node.teamId].ban1 = (node.bans && node.bans[0]) ? node.bans[0].championId : 0; 
+			oTeams[node.teamId].ban2 = (node.bans && node.bans[1]) ? node.bans[1].championId : 0; 
+			oTeams[node.teamId].ban3 = (node.bans && node.bans[2]) ? node.bans[2].championId : 0; 
 			oTeams[node.teamId].match = oData.matchId;
 		}
 		return oTeams;
