@@ -3,6 +3,7 @@ module.exports = {
 	pg : null,
 	client : null,
 	http : null,
+	regions: null,
 
 	init : function(http, log){
 		this.http = http;
@@ -19,21 +20,21 @@ module.exports = {
 		var startTime = new Date(yesterdayMinusOneHour.getTime());
 		startTime.setHours(yesterdayMinusOneHour.getHours(), (5*Math.floor(yesterdayMinusOneHour.getMinutes()/5)), 0, 0);
 
-		var regions = ['br', 'euw', 'na', 'oce', 'ru'];
-		for(var regionKey in regions){
-			this.collectKeys(regions[regionKey], startTime.getTime() / 1000);
+		this.regions = ['br', 'euw', 'na', 'oce', 'ru'];
+		for(var regionKey in this.regions){
+			this.collectKeys(this.regions[regionKey], startTime.getTime() / 1000);
 		}
 
 		setInterval(function(){
 			startTime.setTime(startTime.getTime() + 300000);
-			for(var regionKey in regions){
-				that.collectKeys(regions[regionKey], startTime.getTime() / 1000);
+			for(var regionKey in that.regions){
+				that.collectKeys(that.regions[regionKey], startTime.getTime() / 1000);
 			}
 		},300000); // 300000 for every 5 minutes
 		
-		setInterval(function(){
-			that.initDataCollection();
-		},5000); // 3000 for every 3 seconds
+		//setInterval(function(){
+			//that.initDataCollection();
+		//},5000); // 3000 for every 3 seconds
 
 	},
 
@@ -151,7 +152,7 @@ module.exports = {
 			[oP.id, oP.participantId, oP.spell1Id, oP.spell2Id, oP.championId, oP.highestTier, oP.lane, oP.winner, oP.champLevel, oP.item0, oP.item1, oP.item2, oP.item3, oP.item4, oP.item5, oP.item6, oP.kills, oP.doubleKills, oP.tripleKills, oP.quadraKills, oP.pentaKills, oP.largestKillingSpree, oP.deaths, oP.assists, oP.totalHeal, oP.firstBloodKill, oP.firstBloodAssist, oP.minionsKilled, oP.goldEarned, oP.wardsPlaced, oP.wardsKilled, oP.totalTimeCrowdControlDealt, oP.totalDamageDealt, oP.totalDamageDealtToChampions, oP.team, oP.skillorder], function(err, result) {
 				var current = this.values[0];
 				if(err) {
-					that.log.error("[PARTICIPANT] aint no shit going here on insert team :" +[current]+", "+err);
+					that.log.error("[PARTICIPANT] aint no shit going here on insert participant :" +[current]+", "+err);
 					return that.rollbackDB(client);
 				} else {
 					participantCount++;
@@ -172,6 +173,7 @@ module.exports = {
 			} else {
 				that.log.info("...done");
 				that.commitDB(client, that);
+				that.initDataCollection();
 			}
 		});
 	}, 
@@ -291,6 +293,9 @@ module.exports = {
 		    var aResponse = JSON.parse(str);
 		    that.persistIdsToDB(aResponse, region);
 		    that.log.info("...key collection done");
+			if(that.regions[that.regions.length-1]===region) {
+				that.initDataCollection();
+			}
 		  });
 		}
 		var req = https.request(options, callback);
