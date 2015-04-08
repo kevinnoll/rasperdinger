@@ -8,7 +8,8 @@ module.exports = {
 	init : function(http, log){
 		this.http = http;
 		this.log = log;
-		this.connectToDB();
+		//this.collectChamps();
+		//this.collectItems();
 		this.collectSouls();
 	},
 
@@ -35,7 +36,157 @@ module.exports = {
 		//setInterval(function(){
 			//that.initDataCollection();
 		//},5000); // 3000 for every 3 seconds
+	},
+	
+	collectChamps : function(){
+		var https = require('https');
+		
+		this.log.info("collecting champ data");
+		var that = this;
+		var options = {
+			method: 'GET',
+			hostname: 'global.api.pvp.net',
+			path: '/api/lol/static-data/euw/v1.2/champion?champData=all&api_key=f07be8e4-19c6-4073-b257-863d9791117a'
+		};
 
+		var callback = function(response) {
+		  var str = '';
+		  
+		  //another chunk of data has been recieved, so append it to `str`
+		  response.on('data', function (chunk) {
+		    str += chunk;
+		  });
+
+		  //the whole response has been recieved, so we just print it out here
+		  response.on('end', function () {
+		    var oData = JSON.parse(str);
+			that.log.info(oData.keys);
+			that.persistChampionsToDB(oData.keys);
+		  });
+		}
+		var req = https.request(options, callback);
+		req.end();
+
+		req.on('error', function(e) {
+  			this.log.error(e);
+		});
+	},
+	
+	persistChampionsToDB : function(aChamps){
+		var that = this;
+		var conString = "pg://thresh:thresh@localhost:5432/threshDB";
+		var pg = require("pg");
+		var client = new pg.Client(conString);
+		
+		client.connect(function(err) {
+			var aInnerChamps = aChamps;
+			that.log.info("Champs getting selected");
+			if(err) {
+				return that.log.error('could not connect to postgres', err);
+			}
+			client.query('BEGIN', function(err, result) {
+				if(err) {
+					that.log.error("BEGIN not working...");
+					return that.rollbackDB(client);
+				}
+				var counter = 0;
+				for(var keyId in aChamps) {
+					var currentChamp = aChamps[keyId];
+					client.query('INSERT INTO \"Champion\" (id, name) VALUES ($1, $2)', [keyId, currentChamp], function(err, result) {
+						if(err) {
+							that.log.error("[CHAMPION]aint no shit going here:" +[result.values[1]]+", "+err);
+							return that.rollbackDB(client);
+						}
+					});
+					
+					counter++;
+					if(counter>=124){
+						that.commitDB(client, that);
+					} 
+				}
+			});
+		});
+			that.log.info("Champs selected");
+	},
+	
+	collectItems : function(){
+		var https = require('https');
+		
+		this.log.info("collecting item data");
+		var that = this;
+		var options = {
+			method: 'GET',
+			hostname: 'global.api.pvp.net',
+			path: '/api/lol/static-data/euw/v1.2/item?itemListData=all&api_key=f07be8e4-19c6-4073-b257-863d9791117a'
+		};
+
+		var callback = function(response) {
+		  var str = '';
+		  
+		  //another chunk of data has been recieved, so append it to `str`
+		  response.on('data', function (chunk) {
+		    str += chunk;
+		  });
+
+		  //the whole response has been recieved, so we just print it out here
+		  response.on('end', function () {
+		    var oData = JSON.parse(str);
+			that.log.info(oData.keys);
+			that.persistItemsToDB(oData.data);
+		  });
+		}
+		var req = https.request(options, callback);
+		req.end();
+
+		req.on('error', function(e) {
+  			this.log.error(e);
+		});
+	},
+	
+	persistItemsToDB : function(aItems){
+		var that = this;
+		var conString = "pg://thresh:thresh@localhost:5432/threshDB";
+		var pg = require("pg");
+		var client = new pg.Client(conString);
+		
+		var count = 0;
+		for(var keyId in aItems) {
+			count++;
+		}
+		
+		client.connect(function(err) {
+			var aInnerItems = aItems;
+			that.log.info("Items getting selected");
+			if(err) {
+				return that.log.error('could not connect to postgres', err);
+			}
+			client.query('BEGIN', function(err, result) {
+				if(err) {
+					that.log.error("BEGIN not working...");
+					return that.rollbackDB(client);
+				}
+				var counter = 0;
+				for(var keyId in aInnerItems) {
+					var currentItem = aInnerItems[keyId].name;
+					var error = false;
+					client.query('INSERT INTO \"Item\" (id, name) VALUES ($1, $2)', [keyId, currentItem], function(err, result) {
+						if(err) {
+							that.log.error("[ITEM]aint no shit going here:" +[this.values[1]]+", "+err);
+							return that.rollbackDB(client);
+							error = true;
+						}
+					});
+					
+					if(error)
+						return;
+					counter++;
+					if(counter>=count){
+						that.commitDB(client, that);
+					} 
+				}
+			});
+		});
+		that.log.info("Items selected");
 	},
 
 	initDataCollection : function(){
