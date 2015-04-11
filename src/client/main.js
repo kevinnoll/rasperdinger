@@ -16,8 +16,8 @@
         tip : null,
       	mChampionNames : null,
       	mChampionImageUrls : null,
-        aWinRates : null,
-        aChampionData : null,
+        aBanrates : null,
+        aWinrates : null,
 
       	init : function(){
       		this.loadData();
@@ -40,7 +40,6 @@
 
         loadWinRates : function(){
             var that = this;
-            this.aWinRates = [];
           /*$.get("http://localhost:5433", function( data ) {
           //$.get("http://global.api.pvp.net/api/lol/static-data/euw/v1.2/champion/" + value.championId + "?champData=info&api_key=08d1d2cc-79c5-4dc2-9aa1-50b000cfcd20", function( data ) {
             that.mChampionNames[value.participantId] = data.key;
@@ -57,6 +56,7 @@
         },
 
         createRadioButtons : function(){
+            var that = this;
             var shapeData = [{id:0,name:"Winrates"},{id:1,name:"Banrates"}];
 
             var radioButtons = d3.select(".radioButtons");
@@ -78,19 +78,23 @@
                     return d.id===0; 
                 })
                 .on("click", function(d){
-                    debugger;
+                    if(d.id===0){
+                        that.prepareWinrateChart();
+                    } else if(d.id===1){
+                        that.prepareBanrateChart();
+                    }
                 });
         },
 
       	createScalesAndAxes : function(){
             var that = this;
             this.x = d3.scale.ordinal()
-                .domain(this.aChampionData.map(function(d) { return d.name; }))
+                .domain(this.aWinrates.map(function(d) { return d.name; }))
                 .rangeRoundBands([0, 4000], .1);
             this.y = d3.scale.linear()
                 .range([this.iHeight, 0])
-                //alternative:d3.max(this.aChampionData, function(d) { return d.percentage; })
-                .domain([0, 0.65]);
+                //alternative:d3.max(this.aWinrates, function(d) { return d.percentage; })
+                .domain([0, 0.8]);
     	    this.xAxis = d3.svg.axis()
       			.scale(this.x)
                 .orient("bottom");
@@ -105,6 +109,62 @@
             //this.oZoom.x(this.x);
       	},
 
+        switchToWinrateChart : function(){
+            var that = this;
+            this.field.selectAll(".bar")
+                .data(this.aWinrates)
+                .transition()
+                .attr("class", function(d){
+                    return "bar winrate_"+d.name;
+                })
+                .attr("x", function(d) { return that.x(d.name); })
+                .attr("width", this.x.rangeBand())
+                .attr("y", function(d) { return that.y(d.percentage); })
+                .attr("height", function(d) { return that.iHeight - that.y(d.percentage); })
+                .on("mouseover", this.tip.show)
+                .on("mouseout", this.tip.hide);
+        },
+
+        prepareWinrateChart : function(){
+            if(this.aWinrates){
+                this.switchToWinrateChart();
+            } else {
+                var that = this;
+                $.get("http://localhost:5433/winrates", function( data ) {
+                    that.aWinrates = JSON.parse(data);  
+                    that.switchToWinrateChart();
+                });
+            }
+        },
+
+        prepareBanrateChart : function(){
+            if(this.aBanrates){
+                this.switchToBanrateChart();
+            } else {
+                var that = this;
+                $.get("http://localhost:5433/banrates", function( data ) {
+                    that.aBanrates = JSON.parse(data);  
+                    that.switchToBanrateChart();
+                });
+            }
+        },
+
+        switchToBanrateChart : function(){
+            var that = this;
+            this.field.selectAll(".bar")
+                .data(this.aBanrates)
+                .transition()
+                .attr("class", function(d){
+                    return "bar banrate_"+d.name;
+                })
+                .attr("x", function(d) { return that.x(d.name); })
+                .attr("width", this.x.rangeBand())
+                .attr("y", function(d) { return that.y(d.percentage); })
+                .attr("height", function(d) { return that.iHeight - that.y(d.percentage); })
+                .on("mouseover", this.tip.show)
+                .on("mouseout", this.tip.hide);
+        },
+
       	createWinrateChart : function(){
       		var that = this;
             var xPos = 0;
@@ -116,7 +176,8 @@
                 });
 
             $.get("http://localhost:5433/winrates", function( data ) {
-                that.aChampionData = JSON.parse(data); 
+                that.aWinrates = JSON.parse(data); 
+                console.log(that.aWinrates.length)
                 that.createScalesAndAxes();
         
                 that.field = that.svg.append("g")
@@ -127,7 +188,7 @@
                 that.field.call(that.tip);
 
                 var oChampionWinrates = that.field.selectAll(".bar")
-                    .data(that.aChampionData)
+                    .data(that.aWinrates)
                     .enter()
                     .append("rect")
                     .attr("class", function(d){
