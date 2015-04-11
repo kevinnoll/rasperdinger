@@ -16,8 +16,8 @@ var functionMapping = {
 	"matchduration": "getMatchDuration",
 	"finalitempicks": "getFinalItemPicks",
 	"finalitempicks": "getFinalItemPicks",
-	"skillorder": "getMostPopularSkillorder"
-	
+	"skillorder": "getMostPopularSkillorder",
+	"allskillorders": "getAllSkillorders"
 };
 
 var log = new Logger(customConfig) // custom config parameters will be used, defaults will be used for the other parameters

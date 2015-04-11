@@ -31,6 +31,10 @@ module.exports = {
 		this.returnSQLResult(res, req, http, log, 'currentmostpopularskillorder');
 	},
 	
+	getAllSkillorders : function(res, req, http, log){
+		this.returnSQLResult(res, req, http, log, 'currentallskillorders');
+	},
+	
 	returnSQLResult : function(res, req, http, log, table){
 		this.log = log;
 		this.http = http;
