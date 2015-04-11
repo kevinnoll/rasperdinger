@@ -57,7 +57,8 @@
                 .rangeRoundBands([0, 4000], .1);
             this.y = d3.scale.linear()
                 .range([this.iHeight, 0])
-                .domain([0, d3.max(this.aChampionData, function(d) { return d.percentage; })]);
+                //alternative:d3.max(this.aChampionData, function(d) { return d.percentage; })
+                .domain([0, 0.65]);
     	    this.xAxis = d3.svg.axis()
       			.scale(this.x)
                 .orient("bottom");
@@ -79,14 +80,11 @@
                 //that.aChamionData = JSON.parse(data); 
                 that.aChampionData = _DATA_;
                 that.createScalesAndAxes();
-            
-                that.svg.call(that.oZoom)
-
+        
                 that.field = that.svg.append("g")
                     .classed(".field", true)
                     .attr("transform", "translate(" + that.oMargin.left + "," + that.oMargin.top + ")")
-
-
+                    .call(that.oZoom);
 
                 var oChampionWinrates = that.field.selectAll(".bar")
                     .data(that.aChampionData)
@@ -106,18 +104,24 @@
                     .call(that.xAxis)
                         .selectAll("text")
                         .attr("y", -5)
-                        .attr("x", 50)
                         .attr("transform", "rotate(-90)");
+
+                that.field.append("rect")
+                        .attr("class", "axisBackground")
+                        .attr("x", -that.oMargin.left)
+                        .attr("y", 0)
+                        .attr("height", that.iHeight + that.oMargin.top + that.oMargin.bottom)
+                        .attr("width", that.oMargin.left)
 
                 that.field.append("g")
                     .attr("class", "y axis")
                     .call(that.yAxis)
-                .append("text")
-                    .attr("transform", "rotate(-90)")
-                    .attr("y", 6)
-                    .attr("dy", ".71em")
-                    .style("text-anchor", "end")
-                    .text("Frequency");
+                    .append("text")
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", 6)
+                        .attr("dy", ".71em")
+                        .style("text-anchor", "end")
+                        .text("Frequency");
             });  		
       	},
 
