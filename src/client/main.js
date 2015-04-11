@@ -13,6 +13,7 @@
       	svg : null,
       	field : null,
       	data : null,
+        tip : null,
       	mChampionNames : null,
       	mChampionImageUrls : null,
         aWinRates : null,
@@ -76,6 +77,13 @@
       	createWinrateBars : function(){
       		var that = this;
             var xPos = 0;
+            this.tip = d3.tip()
+                .attr("class", "d3-tip")
+                .offset([-10, 0])
+                .html(function(d) { 
+                    return "<strong>Winrate:</strong> <span style='color:red'>" + d3.format("3.4%")(d.percentage) + "</span>";
+                });
+
             $.get("http://localhost:5433", function( data ) {
                 //that.aChamionData = JSON.parse(data); 
                 that.aChampionData = _DATA_;
@@ -85,6 +93,8 @@
                     .classed(".field", true)
                     .attr("transform", "translate(" + that.oMargin.left + "," + that.oMargin.top + ")")
                     .call(that.oZoom);
+
+                that.field.call(that.tip);
 
                 var oChampionWinrates = that.field.selectAll(".bar")
                     .data(that.aChampionData)
@@ -96,7 +106,9 @@
                     .attr("x", function(d) { return that.x(d.name); })
                     .attr("width", that.x.rangeBand())
                     .attr("y", function(d) { return that.y(d.percentage); })
-                    .attr("height", function(d) { return that.iHeight - that.y(d.percentage); });
+                    .attr("height", function(d) { return that.iHeight - that.y(d.percentage); })
+                    .on("mouseover", that.tip.show)
+                    .on("mouseout", that.tip.hide);
 
                 that.field.append("g")
                     .attr("class", "x axis")
@@ -135,6 +147,7 @@
        	},
 
         draw : function(){
+            this.tip.hide()
             console.log("zooming");
 
             var pan = this.oZoom.translate()[0];
