@@ -64,11 +64,11 @@
                 .data(shapeData)
                 .enter()
                 .append("span");
-
             labelEnter.append("input")
                 .attr({
                     type: "radio",
                     class: "shape",
+                    label: "dayum",
                     name: "mode",
                     value: function(d, i) {
                         return i;
@@ -84,6 +84,9 @@
                         that.prepareBanrateChart();
                     }
                 });
+
+            labelEnter.append("label")
+                .text(function(d) {return d.name;})
         },
 
       	createScalesAndAxes : function(){
@@ -123,9 +126,7 @@
                 .attr("x", function(d) { return that.x(d.name); })
                 .attr("width", this.x.rangeBand())
                 .attr("y", function(d) { return that.y(d.percentage); })
-                .attr("height", function(d) { return that.iHeight - that.y(d.percentage); })
-                .on("mouseover", this.tip.show)
-                .on("mouseout", this.tip.hide);
+                .attr("height", function(d) { return that.iHeight - that.y(d.percentage); });
         },
 
         prepareWinrateChart : function(){
@@ -166,9 +167,7 @@
                 .attr("x", function(d) { return that.x(d.name); })
                 .attr("width", this.x.rangeBand())
                 .attr("y", function(d) { return that.y(d.percentage); })
-                .attr("height", function(d) { return that.iHeight - that.y(d.percentage); })
-                .on("mouseover", this.tip.show)
-                .on("mouseout", this.tip.hide);
+                .attr("height", function(d) { return that.iHeight - that.y(d.percentage); });
         },
 
       	createWinrateChart : function(){
@@ -186,10 +185,11 @@
                 console.log(that.aWinrates.length)
                 that.createScalesAndAxes();
         
+                that.svg.call(that.oZoom);
+
                 that.field = that.svg.append("g")
                     .classed(".field", true)
-                    .attr("transform", "translate(" + that.oMargin.left + "," + that.oMargin.top + ")")
-                    .call(that.oZoom);
+                    .attr("transform", "translate(" + that.oMargin.left + "," + that.oMargin.top + ")");
 
                 that.field.call(that.tip);
 

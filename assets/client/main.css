@@ -2,8 +2,20 @@
   fill: steelblue;
 }
 
+svg{
+	cursor: move;
+}
+
 .bar:hover {
   fill: brown;
+}
+
+.radioButtons span input{
+	margin-right: 5px;
+}
+
+.radioButtons span label{
+	margin-right: 10px;
 }
 
 .axis {
