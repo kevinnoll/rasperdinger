@@ -21,6 +21,11 @@
   shape-rendering: crispEdges;
 }
 
+.x.axis .tick line{
+	fill: none;
+	stroke: #FFF;
+}
+
 .x.axis path {
   display: none;
 }

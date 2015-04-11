@@ -145,7 +145,9 @@
                     .attr("transform", "translate(0," + that.iHeight + ")")
                     .call(that.xAxis)
                         .selectAll("text")
-                        .attr("y", -5)
+                        .attr("y", -4)
+                        .attr("x", 40)
+                        .style("text-anchor", "start")
                         .attr("transform", "rotate(-90)");
 
                 that.field.append("rect")
@@ -164,6 +166,19 @@
                         .attr("dy", ".71em")
                         .style("text-anchor", "end")
                         .text("Frequency");
+
+                that.field.selectAll(".x.axis .tick")
+                    .append("svg:image")
+                    .attr("class", function(d){
+                        return "img_"+d;
+                    })
+                    .attr('x',-10)
+                    .attr('y',-30)
+                    .attr('height', 20)
+                    .attr('width', 20)
+                    .attr("xlink:href",function(d){
+                        return "http://ddragon.leagueoflegends.com/cdn/5.6.1/img/champion/" + d + ".png";
+                    });
             });  		
       	},
 
