@@ -86,23 +86,7 @@
                     .classed(".field", true)
                     .attr("transform", "translate(" + that.oMargin.left + "," + that.oMargin.top + ")")
 
-                that.field.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate(0," + that.iHeight + ")")
-                    .call(that.xAxis)
-                        .selectAll("text")
-                        .attr("y", -5)
-                        .attr("transform", "rotate(-90)");
 
-                that.field.append("g")
-                    .attr("class", "y axis")
-                    .call(that.yAxis)
-                .append("text")
-                    .attr("transform", "rotate(-90)")
-                    .attr("y", 6)
-                    .attr("dy", ".71em")
-                    .style("text-anchor", "end")
-                    .text("Frequency");
 
                 var oChampionWinrates = that.field.selectAll(".bar")
                     .data(that.aChampionData)
@@ -115,6 +99,25 @@
                     .attr("width", that.x.rangeBand())
                     .attr("y", function(d) { return that.y(d.percentage); })
                     .attr("height", function(d) { return that.iHeight - that.y(d.percentage); });
+
+                that.field.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + that.iHeight + ")")
+                    .call(that.xAxis)
+                        .selectAll("text")
+                        .attr("y", -5)
+                        .attr("x", 50)
+                        .attr("transform", "rotate(-90)");
+
+                that.field.append("g")
+                    .attr("class", "y axis")
+                    .call(that.yAxis)
+                .append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 6)
+                    .attr("dy", ".71em")
+                    .style("text-anchor", "end")
+                    .text("Frequency");
             });  		
       	},
 
@@ -129,16 +132,16 @@
 
         draw : function(){
             console.log("zooming");
-            /*t = this.oZoom.translate(),
-            tx = t[0],
-            ty = t[1];
 
-            tx = Math.min(tx, 0);
-            tx = Math.max(tx, that.iWidth - 4000);
-            this.oZoom.translate([tx, ty]);*/
-            d3.select(".x.axis").attr("transform", "translate(" + d3.event.translate[0]+","+(this.iHeight)+")")
-            d3.selectAll(".bar").attr("transform", "translate(" + d3.event.translate[0]+",0)scale(" + d3.event.scale + ",1)");
+            var pan = this.oZoom.translate()[0];
+            pan = Math.min(pan, 0);
+            pan = Math.max(pan, this.iWidth-4000);
+            this.oZoom.translate([pan,0]);
 
+            d3.select(".x.axis").attr("transform", "translate(" + pan +","+(this.iHeight)+")")
+            d3.selectAll(".bar").attr("transform", "translate(" + pan +",0)scale(" + d3.event.scale + ",1)");
+
+           
         }
 
     }
