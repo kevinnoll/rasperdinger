@@ -30,6 +30,7 @@
         },
 
         createCharts : function(){
+            this.createRadioButtons();
             this.createWinrateChart();
         },
 
@@ -53,6 +54,32 @@
               .attr('iHeight', 20)
               .attr("xlink:href",championImageUrl);
           });*/
+        },
+
+        createRadioButtons : function(){
+            var shapeData = [{id:0,name:"Winrates"},{id:1,name:"Banrates"}];
+
+            var radioButtons = d3.select(".radioButtons");
+            var labelEnter = radioButtons.selectAll(".radioButton")
+                .data(shapeData)
+                .enter()
+                .append("span");
+
+            labelEnter.append("input")
+                .attr({
+                    type: "radio",
+                    class: "shape",
+                    name: "mode",
+                    value: function(d, i) {
+                        return i;
+                    }
+                })
+                .property("checked", function(d, i) { 
+                    return d.id===0; 
+                })
+                .on("click", function(d){
+                    debugger;
+                });
         },
 
       	createScalesAndAxes : function(){
