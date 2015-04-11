@@ -9,7 +9,7 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      files: ['index.html','**/*.js']
+      files: ['index.html','**/*.js','**/*.css']
     },
     connect: {
       server: {
