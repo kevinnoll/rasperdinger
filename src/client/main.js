@@ -96,8 +96,8 @@
                 .rangeRoundBands([0, 4000], .1);
             this.y = d3.scale.linear()
                 .range([this.iHeight, 0])
-                //alternative:d3.max(this.aWinrates, function(d) { return d.percentage; })
-                .domain([0, 0.8]);
+                .domain([0, d3.max(this.aWinrates, function(d) { return d.percentage; })]);
+                //.domain([0, 0.8]);
     	    this.xAxis = d3.svg.axis()
       			.scale(this.x)
                 .orient("bottom");
@@ -114,12 +114,14 @@
 
         switchToWinrateChart : function(){
             var that = this;
+            this.y.domain([0, d3.max(this.aWinrates, function(d) { return d.percentage; })]);
+            this.field.select(".y.axis").transition().duration(1000).call(this.yAxis);
             this.tip.html(function(d) { 
                     return "<strong>Winrate:</strong> <span style='color:red'>" + d3.format("3.3%")(d.percentage) + "</span>";
                 });
             this.field.selectAll(".bar")
                 .data(this.aWinrates)
-                .transition()
+                .transition().duration(1000)
                 .attr("class", function(d){
                     return "bar winrate_"+d.name;
                 })
@@ -127,6 +129,7 @@
                 .attr("width", this.x.rangeBand())
                 .attr("y", function(d) { return that.y(d.percentage); })
                 .attr("height", function(d) { return that.iHeight - that.y(d.percentage); });
+
         },
 
         prepareWinrateChart : function(){
@@ -155,19 +158,21 @@
 
         switchToBanrateChart : function(){
             var that = this;
+            this.y.domain([0, d3.max(this.aBanrates, function(d) { return d.percentage; })]);
+            this.field.select(".y.axis").transition().duration(1000).call(this.yAxis);
             this.tip.html(function(d) { 
                     return "<strong>Banrate:</strong> <span style='color:red'>" + d3.format("3.3%")(d.percentage) + "</span>";
                 });
             this.field.selectAll(".bar")
                 .data(this.aBanrates)
-                .transition()
+                .transition().duration(1000)
                 .attr("class", function(d){
                     return "bar banrate_"+d.name;
                 })
                 .attr("x", function(d) { return that.x(d.name); })
                 .attr("width", this.x.rangeBand())
-                .attr("y", function(d) { return that.y(d.percentage); })
-                .attr("height", function(d) { return that.iHeight - that.y(d.percentage); });
+                .attr("height", function(d) { return that.iHeight - that.y(d.percentage); })
+                .attr("y", function(d) { return that.y(d.percentage); });
         },
 
       	createWinrateChart : function(){
