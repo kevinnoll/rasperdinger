@@ -5,6 +5,33 @@ module.exports = {
 	http : null,
 
 	getWinRates : function(res, req, http, log){
+		this.returnSQLResult(res, req, http, log, 'currentwinrateunreal');
+	}, 
+	getBanRates : function(res, req, http, log){
+		this.returnSQLResult(res, req, http, log, 'currentbanrate');
+	}, 
+	 
+	getPopularityUnreal : function(res, req, http, log){
+		this.returnSQLResult(res, req, http, log, 'currentchamppopularityunreal');
+	},
+	
+	getPopularityReal : function(res, req, http, log){
+		this.returnSQLResult(res, req, http, log, 'currentchamppopularityreal');
+	},
+	
+	getMatchDuration : function(res, req, http, log){
+		this.returnSQLResult(res, req, http, log, 'currentmatchduration');
+	},
+	
+	getFinalItemPicks : function(res, req, http, log){
+		this.returnSQLResult(res, req, http, log, 'currentfinalitempicks');
+	},
+	
+	getMostPopularSkillorder : function(res, req, http, log){
+		this.returnSQLResult(res, req, http, log, 'currentmostpopularskillorder');
+	},
+	
+	returnSQLResult : function(res, req, http, log, table){
 		this.log = log;
 		this.http = http;
 		var that = this;
@@ -22,13 +49,13 @@ module.exports = {
 					that.log.error("BEGIN not working...");
 					return that.rollbackDB(oClient);
 				}
-				var selectIDQuery = oClient.query('SELECT * FROM \"Champion\"');
+				var selectIDQuery = oClient.query('SELECT * FROM '+table);
 				selectIDQuery.on('row', function(row) {
 					that.result.push(row);
 				});
 				selectIDQuery.on('end', function(result) {
 					if(result.rowCount===0){
-						that.log.info("no winrates received!")	
+						that.log.info("no "+table+" received!")	
 						oClient.end();				
 					} else {
 					    res.setHeader("Access-Control-Allow-Origin", "http://localhost:9001");
