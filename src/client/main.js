@@ -145,7 +145,7 @@
             this.oMargin = {top: 20, right: 20, bottom: 30, left: 40};
             this.iWidth = 1200 - this.oMargin.left - this.oMargin.right;
             this.iHeight = 500 - this.oMargin.top - this.oMargin.bottom;
-          	this.svg = d3.select("body").append("svg")
+          	this.svg = d3.select(".svg_anchor").append("svg")
         		.attr("width", this.iWidth + this.oMargin.left + this.oMargin.right)
         		.attr("height", this.iHeight + this.oMargin.top + this.oMargin.bottom);
        	},
