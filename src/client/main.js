@@ -112,7 +112,7 @@
         switchToWinrateChart : function(){
             var that = this;
             this.tip.html(function(d) { 
-                    return "<strong>Banrate:</strong> <span style='color:red'>" + d3.format("3.3%")(d.percentage) + "</span>";
+                    return "<strong>Winrate:</strong> <span style='color:red'>" + d3.format("3.3%")(d.percentage) + "</span>";
                 });
             this.field.selectAll(".bar")
                 .data(this.aWinrates)
