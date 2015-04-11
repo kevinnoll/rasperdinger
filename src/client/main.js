@@ -26,7 +26,11 @@
 
         create : function(){
             this.createSVG();
-            this.createWinrateBars();
+            this.createCharts();
+        },
+
+        createCharts : function(){
+            this.createWinrateChart();
         },
 
         loadData : function(){
@@ -74,14 +78,14 @@
             //this.oZoom.x(this.x);
       	},
 
-      	createWinrateBars : function(){
+      	createWinrateChart : function(){
       		var that = this;
             var xPos = 0;
             this.tip = d3.tip()
                 .attr("class", "d3-tip")
                 .offset([-10, 0])
                 .html(function(d) { 
-                    return "<strong>Winrate:</strong> <span style='color:red'>" + d3.format("3.4%")(d.percentage) + "</span>";
+                    return "<strong>Winrate:</strong> <span style='color:red'>" + d3.format("3.3%")(d.percentage) + "</span>";
                 });
 
             $.get("http://localhost:5433", function( data ) {
