@@ -115,9 +115,8 @@
                     return "<strong>Winrate:</strong> <span style='color:red'>" + d3.format("3.3%")(d.percentage) + "</span>";
                 });
 
-            $.get("http://localhost:5433", function( data ) {
-                //that.aChamionData = JSON.parse(data); 
-                that.aChampionData = _DATA_;
+            $.get("http://localhost:5433/winrates", function( data ) {
+                that.aChampionData = JSON.parse(data); 
                 that.createScalesAndAxes();
         
                 that.field = that.svg.append("g")
