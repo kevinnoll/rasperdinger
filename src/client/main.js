@@ -26,7 +26,12 @@
 
         create : function(){
             this.createSVG();
-            this.createWinrateBars();
+            this.createCharts();
+        },
+
+        createCharts : function(){
+            this.createRadioButtons();
+            this.createWinrateChart();
         },
 
         loadData : function(){
@@ -49,6 +54,32 @@
               .attr('iHeight', 20)
               .attr("xlink:href",championImageUrl);
           });*/
+        },
+
+        createRadioButtons : function(){
+            var shapeData = [{id:0,name:"Winrates"},{id:1,name:"Banrates"}];
+
+            var radioButtons = d3.select(".radioButtons");
+            var labelEnter = radioButtons.selectAll(".radioButton")
+                .data(shapeData)
+                .enter()
+                .append("span");
+
+            labelEnter.append("input")
+                .attr({
+                    type: "radio",
+                    class: "shape",
+                    name: "mode",
+                    value: function(d, i) {
+                        return i;
+                    }
+                })
+                .property("checked", function(d, i) { 
+                    return d.id===0; 
+                })
+                .on("click", function(d){
+                    debugger;
+                });
         },
 
       	createScalesAndAxes : function(){
@@ -74,14 +105,14 @@
             //this.oZoom.x(this.x);
       	},
 
-      	createWinrateBars : function(){
+      	createWinrateChart : function(){
       		var that = this;
             var xPos = 0;
             this.tip = d3.tip()
                 .attr("class", "d3-tip")
                 .offset([-10, 0])
                 .html(function(d) { 
-                    return "<strong>Winrate:</strong> <span style='color:red'>" + d3.format("3.4%")(d.percentage) + "</span>";
+                    return "<strong>Winrate:</strong> <span style='color:red'>" + d3.format("3.3%")(d.percentage) + "</span>";
                 });
 
             $.get("http://localhost:5433", function( data ) {
@@ -141,7 +172,7 @@
             this.oMargin = {top: 20, right: 20, bottom: 30, left: 40};
             this.iWidth = 1200 - this.oMargin.left - this.oMargin.right;
             this.iHeight = 500 - this.oMargin.top - this.oMargin.bottom;
-          	this.svg = d3.select("body").append("svg")
+          	this.svg = d3.select(".svg_anchor").append("svg")
         		.attr("width", this.iWidth + this.oMargin.left + this.oMargin.right)
         		.attr("height", this.iHeight + this.oMargin.top + this.oMargin.bottom);
        	},
