@@ -1,0 +1,621 @@
+var _DATA_ = [{
+	"champ": "37",
+	"name": "Sona",
+	"number": "2804",
+	"percentage": 0.581139896373057
+}, {
+	"champ": "3",
+	"name": "Galio",
+	"number": "875",
+	"percentage": 0.568181818181818
+}, {
+	"champ": "62",
+	"name": "MonkeyKing",
+	"number": "2970",
+	"percentage": 0.563353566009105
+}, {
+	"champ": "24",
+	"name": "Jax",
+	"number": "2488",
+	"percentage": 0.561878952122855
+}, {
+	"champ": "78",
+	"name": "Poppy",
+	"number": "1051",
+	"percentage": 0.558151885289432
+}, {
+	"champ": "114",
+	"name": "Fiora",
+	"number": "1303",
+	"percentage": 0.549093973872735
+}, {
+	"champ": "28",
+	"name": "Evelynn",
+	"number": "3473",
+	"percentage": 0.54736012608353
+}, {
+	"champ": "5",
+	"name": "XinZhao",
+	"number": "2554",
+	"percentage": 0.540643522438611
+}, {
+	"champ": "57",
+	"name": "Maokai",
+	"number": "2303",
+	"percentage": 0.540483454588125
+}, {
+	"champ": "102",
+	"name": "Shyvana",
+	"number": "214",
+	"percentage": 0.54040404040404
+}, {
+	"champ": "131",
+	"name": "Diana",
+	"number": "1128",
+	"percentage": 0.539971278123504
+}, {
+	"champ": "105",
+	"name": "Fizz",
+	"number": "3031",
+	"percentage": 0.535796358493901
+}, {
+	"champ": "19",
+	"name": "Warwick",
+	"number": "705",
+	"percentage": 0.534901365705615
+}, {
+	"champ": "120",
+	"name": "Hecarim",
+	"number": "2567",
+	"percentage": 0.53423517169615
+}, {
+	"champ": "85",
+	"name": "Kennen",
+	"number": "610",
+	"percentage": 0.533216783216783
+}, {
+	"champ": "23",
+	"name": "Tryndamere",
+	"number": "1154",
+	"percentage": 0.530574712643678
+}, {
+	"champ": "72",
+	"name": "Skarner",
+	"number": "357",
+	"percentage": 0.530460624071322
+}, {
+	"champ": "56",
+	"name": "Nocturne",
+	"number": "353",
+	"percentage": 0.53003003003003
+}, {
+	"champ": "30",
+	"name": "Karthus",
+	"number": "2039",
+	"percentage": 0.529747986489997
+}, {
+	"champ": "238",
+	"name": "Zed",
+	"number": "3941",
+	"percentage": 0.527930341594106
+}, {
+	"champ": "254",
+	"name": "Vi",
+	"number": "752",
+	"percentage": 0.527719298245614
+}, {
+	"champ": "10",
+	"name": "Kayle",
+	"number": "681",
+	"percentage": 0.527498063516654
+}, {
+	"champ": "266",
+	"name": "Aatrox",
+	"number": "259",
+	"percentage": 0.527494908350306
+}, {
+	"champ": "90",
+	"name": "Malzahar",
+	"number": "1349",
+	"percentage": 0.52715904650254
+}, {
+	"champ": "61",
+	"name": "Orianna",
+	"number": "910",
+	"percentage": 0.525707683419988
+}, {
+	"champ": "68",
+	"name": "Rumble",
+	"number": "387",
+	"percentage": 0.523680649526387
+}, {
+	"champ": "103",
+	"name": "Ahri",
+	"number": "2683",
+	"percentage": 0.522798129384256
+}, {
+	"champ": "143",
+	"name": "Zyra",
+	"number": "692",
+	"percentage": 0.522264150943396
+}, {
+	"champ": "35",
+	"name": "Shaco",
+	"number": "5175",
+	"percentage": 0.522199798183653
+}, {
+	"champ": "113",
+	"name": "Sejuani",
+	"number": "1739",
+	"percentage": 0.521752175217522
+}, {
+	"champ": "119",
+	"name": "Draven",
+	"number": "423",
+	"percentage": 0.521578298397041
+}, {
+	"champ": "15",
+	"name": "Sivir",
+	"number": "1305",
+	"percentage": 0.51909307875895
+}, {
+	"champ": "11",
+	"name": "MasterYi",
+	"number": "3881",
+	"percentage": 0.518989034501203
+}, {
+	"champ": "106",
+	"name": "Volibear",
+	"number": "399",
+	"percentage": 0.518181818181818
+}, {
+	"champ": "122",
+	"name": "Darius",
+	"number": "907",
+	"percentage": 0.517989720159909
+}, {
+	"champ": "98",
+	"name": "Shen",
+	"number": "801",
+	"percentage": 0.517107811491285
+}, {
+	"champ": "8",
+	"name": "Vladimir",
+	"number": "1550",
+	"percentage": 0.515635395874917
+}, {
+	"champ": "32",
+	"name": "Amumu",
+	"number": "1278",
+	"percentage": 0.51345922057051
+}, {
+	"champ": "91",
+	"name": "Talon",
+	"number": "1046",
+	"percentage": 0.512996566944581
+}, {
+	"champ": "33",
+	"name": "Rammus",
+	"number": "479",
+	"percentage": 0.511205976520811
+}, {
+	"champ": "81",
+	"name": "Ezreal",
+	"number": "6980",
+	"percentage": 0.509117432530999
+}, {
+	"champ": "111",
+	"name": "Nautilus",
+	"number": "710",
+	"percentage": 0.50823192555476
+}, {
+	"champ": "104",
+	"name": "Graves",
+	"number": "548",
+	"percentage": 0.506469500924214
+}, {
+	"champ": "12",
+	"name": "Alistar",
+	"number": "1693",
+	"percentage": 0.505826112936958
+}, {
+	"champ": "17",
+	"name": "Teemo",
+	"number": "3720",
+	"percentage": 0.505366118733868
+}, {
+	"champ": "268",
+	"name": "Azir",
+	"number": "1026",
+	"percentage": 0.503681885125184
+}, {
+	"champ": "154",
+	"name": "Zac",
+	"number": "211",
+	"percentage": 0.503579952267303
+}, {
+	"champ": "117",
+	"name": "Lulu",
+	"number": "1794",
+	"percentage": 0.501677852348993
+}, {
+	"champ": "25",
+	"name": "Morgana",
+	"number": "3784",
+	"percentage": 0.501192052980132
+}, {
+	"champ": "134",
+	"name": "Syndra",
+	"number": "892",
+	"percentage": 0.501123595505618
+}, {
+	"champ": "74",
+	"name": "Heimerdinger",
+	"number": "844",
+	"percentage": 0.500890207715133
+}, {
+	"champ": "54",
+	"name": "Malphite",
+	"number": "2638",
+	"percentage": 0.499905249194618
+}, {
+	"champ": "55",
+	"name": "Katarina",
+	"number": "3411",
+	"percentage": 0.499268149882904
+}, {
+	"champ": "82",
+	"name": "Mordekaiser",
+	"number": "542",
+	"percentage": 0.499079189686924
+}, {
+	"champ": "39",
+	"name": "Irelia",
+	"number": "456",
+	"percentage": 0.49890590809628
+}, {
+	"champ": "83",
+	"name": "Yorick",
+	"number": "363",
+	"percentage": 0.498626373626374
+}, {
+	"champ": "58",
+	"name": "Renekton",
+	"number": "277",
+	"percentage": 0.497307001795332
+}, {
+	"champ": "1",
+	"name": "Annie",
+	"number": "1880",
+	"percentage": 0.496566296883254
+}, {
+	"champ": "16",
+	"name": "Soraka",
+	"number": "992",
+	"percentage": 0.496496496496497
+}, {
+	"champ": "4",
+	"name": "TwistedFate",
+	"number": "1357",
+	"percentage": 0.493095930232558
+}, {
+	"champ": "77",
+	"name": "Udyr",
+	"number": "479",
+	"percentage": 0.492798353909465
+}, {
+	"champ": "121",
+	"name": "Khazix",
+	"number": "622",
+	"percentage": 0.492478226444972
+}, {
+	"champ": "96",
+	"name": "KogMaw",
+	"number": "642",
+	"percentage": 0.491954022988506
+}, {
+	"champ": "50",
+	"name": "Swain",
+	"number": "2147",
+	"percentage": 0.491641859400046
+}, {
+	"champ": "53",
+	"name": "Blitzcrank",
+	"number": "4506",
+	"percentage": 0.491063644289451
+}, {
+	"champ": "267",
+	"name": "Nami",
+	"number": "723",
+	"percentage": 0.489505754908598
+}, {
+	"champ": "75",
+	"name": "Nasus",
+	"number": "2178",
+	"percentage": 0.489438202247191
+}, {
+	"champ": "9",
+	"name": "FiddleSticks",
+	"number": "891",
+	"percentage": 0.488754799780581
+}, {
+	"champ": "107",
+	"name": "Rengar",
+	"number": "690",
+	"percentage": 0.486944248412138
+}, {
+	"champ": "76",
+	"name": "Nidalee",
+	"number": "4712",
+	"percentage": 0.486425105811913
+}, {
+	"champ": "41",
+	"name": "Gangplank",
+	"number": "1604",
+	"percentage": 0.486060606060606
+}, {
+	"champ": "133",
+	"name": "Quinn",
+	"number": "999",
+	"percentage": 0.48495145631068
+}, {
+	"champ": "92",
+	"name": "Riven",
+	"number": "1582",
+	"percentage": 0.48468137254902
+}, {
+	"champ": "59",
+	"name": "JarvanIV",
+	"number": "457",
+	"percentage": 0.484110169491525
+}, {
+	"champ": "2",
+	"name": "Olaf",
+	"number": "300",
+	"percentage": 0.483870967741935
+}, {
+	"champ": "126",
+	"name": "Jayce",
+	"number": "1419",
+	"percentage": 0.483310626702997
+}, {
+	"champ": "36",
+	"name": "DrMundo",
+	"number": "836",
+	"percentage": 0.481844380403458
+}, {
+	"champ": "40",
+	"name": "Janna",
+	"number": "382",
+	"percentage": 0.479899497487437
+}, {
+	"champ": "99",
+	"name": "Lux",
+	"number": "3340",
+	"percentage": 0.479678299583513
+}, {
+	"champ": "31",
+	"name": "Chogath",
+	"number": "2365",
+	"percentage": 0.479521492295215
+}, {
+	"champ": "89",
+	"name": "Leona",
+	"number": "951",
+	"percentage": 0.477170095333668
+}, {
+	"champ": "127",
+	"name": "Lissandra",
+	"number": "424",
+	"percentage": 0.476940382452194
+}, {
+	"champ": "45",
+	"name": "Veigar",
+	"number": "1471",
+	"percentage": 0.476823338735819
+}, {
+	"champ": "43",
+	"name": "Karma",
+	"number": "2446",
+	"percentage": 0.476617303195635
+}, {
+	"champ": "115",
+	"name": "Ziggs",
+	"number": "1404",
+	"percentage": 0.473364801078894
+}, {
+	"champ": "67",
+	"name": "Vayne",
+	"number": "620",
+	"percentage": 0.473282442748092
+}, {
+	"champ": "84",
+	"name": "Akali",
+	"number": "857",
+	"percentage": 0.472697186982901
+}, {
+	"champ": "27",
+	"name": "Singed",
+	"number": "727",
+	"percentage": 0.472077922077922
+}, {
+	"champ": "22",
+	"name": "Ashe",
+	"number": "2710",
+	"percentage": 0.471140472878999
+}, {
+	"champ": "6",
+	"name": "Urgot",
+	"number": "640",
+	"percentage": 0.470242468772961
+}, {
+	"champ": "236",
+	"name": "Lucian",
+	"number": "1261",
+	"percentage": 0.470171513795675
+}, {
+	"champ": "79",
+	"name": "Gragas",
+	"number": "549",
+	"percentage": 0.470034246575342
+}, {
+	"champ": "112",
+	"name": "Viktor",
+	"number": "360",
+	"percentage": 0.469361147327249
+}, {
+	"champ": "44",
+	"name": "Taric",
+	"number": "282",
+	"percentage": 0.464579901153213
+}, {
+	"champ": "80",
+	"name": "Pantheon",
+	"number": "893",
+	"percentage": 0.461022199277233
+}, {
+	"champ": "222",
+	"name": "Jinx",
+	"number": "2119",
+	"percentage": 0.458956032055447
+}, {
+	"champ": "38",
+	"name": "Kassadin",
+	"number": "843",
+	"percentage": 0.457654723127036
+}, {
+	"champ": "63",
+	"name": "Brand",
+	"number": "769",
+	"percentage": 0.456379821958457
+}, {
+	"champ": "20",
+	"name": "Nunu",
+	"number": "588",
+	"percentage": 0.454404945904173
+}, {
+	"champ": "18",
+	"name": "Tristana",
+	"number": "527",
+	"percentage": 0.452749140893471
+}, {
+	"champ": "13",
+	"name": "Ryze",
+	"number": "857",
+	"percentage": 0.452004219409283
+}, {
+	"champ": "42",
+	"name": "Corki",
+	"number": "321",
+	"percentage": 0.450842696629214
+}, {
+	"champ": "86",
+	"name": "Garen",
+	"number": "558",
+	"percentage": 0.448553054662379
+}, {
+	"champ": "14",
+	"name": "Sion",
+	"number": "406",
+	"percentage": 0.448123620309051
+}, {
+	"champ": "7",
+	"name": "Leblanc",
+	"number": "2197",
+	"percentage": 0.447363062512727
+}, {
+	"champ": "64",
+	"name": "LeeSin",
+	"number": "1070",
+	"percentage": 0.446019174656107
+}, {
+	"champ": "26",
+	"name": "Zilean",
+	"number": "417",
+	"percentage": 0.445512820512821
+}, {
+	"champ": "48",
+	"name": "Trundle",
+	"number": "578",
+	"percentage": 0.44495765973826
+}, {
+	"champ": "51",
+	"name": "Caitlyn",
+	"number": "571",
+	"percentage": 0.443667443667444
+}, {
+	"champ": "429",
+	"name": "Kalista",
+	"number": "204",
+	"percentage": 0.441558441558442
+}, {
+	"champ": "21",
+	"name": "MissFortune",
+	"number": "515",
+	"percentage": 0.44054747647562
+}, {
+	"champ": "161",
+	"name": "Velkoz",
+	"number": "838",
+	"percentage": 0.440357330530741
+}, {
+	"champ": "69",
+	"name": "Cassiopeia",
+	"number": "239",
+	"percentage": 0.436928702010969
+}, {
+	"champ": "101",
+	"name": "Xerath",
+	"number": "580",
+	"percentage": 0.436418359668924
+}, {
+	"champ": "29",
+	"name": "Twitch",
+	"number": "974",
+	"percentage": 0.436379928315412
+}, {
+	"champ": "157",
+	"name": "Yasuo",
+	"number": "586",
+	"percentage": 0.432153392330383
+}, {
+	"champ": "110",
+	"name": "Varus",
+	"number": "661",
+	"percentage": 0.431180691454664
+}, {
+	"champ": "150",
+	"name": "Gnar",
+	"number": "226",
+	"percentage": 0.429657794676806
+}, {
+	"champ": "421",
+	"name": "RekSai",
+	"number": "291",
+	"percentage": 0.425438596491228
+}, {
+	"champ": "201",
+	"name": "Braum",
+	"number": "143",
+	"percentage": 0.421828908554572
+}, {
+	"champ": "432",
+	"name": "Bard",
+	"number": "515",
+	"percentage": 0.417680454176805
+}, {
+	"champ": "60",
+	"name": "Elise",
+	"number": "153",
+	"percentage": 0.409090909090909
+}, {
+	"champ": "34",
+	"name": "Anivia",
+	"number": "367",
+	"percentage": 0.40197152245345
+}, {
+	"champ": "412",
+	"name": "Thresh",
+	"number": "499",
+	"percentage": 0.381790359602142
+}];
