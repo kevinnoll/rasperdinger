@@ -181,7 +181,7 @@
                     .enter()
                     .append("rect")
                     .attr("class", function(d){
-                        return "bar winrate_"+d.name;
+                        return "bar "+d.name;
                     })
                     .attr("x", function(d) { return that.x(d.name); })
                     .attr("width", that.x.rangeBand())
