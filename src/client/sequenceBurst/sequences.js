@@ -6,7 +6,7 @@ var width = 750;
 
     // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
     var b = {
-      w: 75, h: 30, s: 3, t: 10
+      w: 30, h: 30, s: 3, t: 10
     };
 
     // Mapping of step names to colors.
@@ -216,7 +216,17 @@ var width = 750;
           .attr("y", b.h / 2)
           .attr("dy", "0.35em")
           .attr("text-anchor", "middle")
-          .text(function(d) { return d.name; });
+          .text(function(d) { 
+            if(d.name==="1"){
+              return "Q";
+            } else if(d.name==="2"){
+              return "W";
+            } else if(d.name==="3"){
+              return "E";
+            } else if(d.name==="4"){
+              return "R";
+            } 
+          });
 
       // Set position for entering and updating nodes.
       g.attr("transform", function(d, i) {
@@ -228,7 +238,7 @@ var width = 750;
 
       // Now move and update the percentage at the end.
       d3.select("#trail").select("#endlabel")
-          .attr("x", (nodeArray.length + 0.5) * (b.w + b.s))
+          .attr("x", (nodeArray.length + 1) * (b.w + b.s))
           .attr("y", b.h / 2)
           .attr("dy", "0.35em")
           .attr("text-anchor", "middle")
