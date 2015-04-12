@@ -46,6 +46,7 @@
 					        d3.select(".floated_img."+d.name).classed("css3grayscale1", false);
 					        d3.select("#container").selectAll("*").remove();
 					        d3.select("#sequence").selectAll("*").remove();
+					        d3.select("#legend").selectAll("*").remove();
 					        SequenceDiagram.create(d);
 					        return false;
 		    			});

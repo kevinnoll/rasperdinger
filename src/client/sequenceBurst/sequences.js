@@ -280,7 +280,17 @@ var width = 750;
           .attr("y", li.h / 2)
           .attr("dy", "0.35em")
           .attr("text-anchor", "middle")
-          .text(function(d) { return d.key; });
+          .text(function(d) { 
+            if(d.key==="1"){
+              return "Q";
+            } else if(d.key==="2"){
+              return "W";
+            } else if(d.key==="3"){
+              return "E";
+            } else if(d.key==="4"){
+              return "R";
+            } 
+          });
     }
 
     function toggleLegend() {
