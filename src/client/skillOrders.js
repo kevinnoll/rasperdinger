@@ -6,7 +6,7 @@
 
     	init : function(){
     		var that = this;
-    		$.get("http://localhost:5433/winrates", function(winrates) {
+    		$.get("http://localhost:5433/champions", function(winrates) {
                 that.aChamps = JSON.parse(winrates);  
                 that.createGrid();
             });
