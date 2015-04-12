@@ -171,7 +171,7 @@
                 that.svg.call(that.oZoom);
 
                 that.field = that.svg.append("g")
-                    .classed(".field", true)
+                    .classed("field", true)
                     .attr("transform", "translate(" + that.oMargin.left + "," + that.oMargin.top + ")");
 
                 that.field.call(that.tip);
