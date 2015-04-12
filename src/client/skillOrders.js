@@ -38,10 +38,10 @@
 		    			.style("max-width", "100%")
 		    			.style("max-height", "100%")
 		    			.on("click", function(d){
-		    				debugger;
 		    				$(this).find('.card').addClass('flipped').mouseleave(function(){
 					            $(this).removeClass('flipped');
 					        });
+					        SequenceDiagram.create(d);
 					        return false;
 		    			});
 
@@ -49,7 +49,6 @@
 		    	.classed("face back", true);
 
     		this.aChamps = null;
-    		SequenceDiagram.create();
     	}
     }
 
