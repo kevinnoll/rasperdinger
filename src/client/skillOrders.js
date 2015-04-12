@@ -41,6 +41,9 @@
 		    				$(this).find('.card').addClass('flipped').mouseleave(function(){
 					            $(this).removeClass('flipped');
 					        });
+
+					        d3.selectAll(".floated_img").classed("css3grayscale1",true);
+					        d3.select(".floated_img."+d.name).classed("css3grayscale1", false);
 					        d3.select("#container").selectAll("*").remove();
 					        d3.select("#sequence").selectAll("*").remove();
 					        SequenceDiagram.create(d);
