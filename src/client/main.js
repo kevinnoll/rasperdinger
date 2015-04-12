@@ -20,39 +20,13 @@
         aWinrates : null,
 
       	init : function(){
-      		this.loadData();
       		this.create();
       	},
 
         create : function(){
             this.createSVG();
-            this.createCharts();
-        },
-
-        createCharts : function(){
             this.createRadioButtons();
             this.createWinrateChart();
-        },
-
-        loadData : function(){
-            this.loadWinRates();
-        },
-
-        loadWinRates : function(){
-            var that = this;
-          /*$.get("http://localhost:5433", function( data ) {
-          //$.get("http://global.api.pvp.net/api/lol/static-data/euw/v1.2/champion/" + value.championId + "?champData=info&api_key=08d1d2cc-79c5-4dc2-9aa1-50b000cfcd20", function( data ) {
-            that.mChampionNames[value.participantId] = data.key;
-            var championImageUrl = "http://ddragon.leagueoflegends.com/cdn/5.6.1/img/champion/" + data.key + ".png";
-            that.mChampionImageUrls[value.participantId] = championImageUrl;
-            d3.select(".player_" + value.participantId)
-              .append("svg:image")
-              .attr('x',-10)
-              .attr('y',-10)
-              .attr('iWidth', 20)
-              .attr('iHeight', 20)
-              .attr("xlink:href",championImageUrl);
-          });*/
         },
 
         createRadioButtons : function(){
