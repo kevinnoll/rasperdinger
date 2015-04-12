@@ -88,8 +88,10 @@
 
         switchToWinrateChart : function(){
             var that = this;
+            this.x.domain(this.aWinrates.map(function(d) { return d.name; }))
             this.y.domain([0, d3.max(this.aWinrates, function(d) { return d.percentage; })]);
             this.field.select(".y.axis").transition().duration(1000).call(this.yAxis);
+            this.field.select(".x.axis").transition().duration(1000).call(this.xAxis).selectAll("text").attr("y", -4).attr("x", 40).style("text-anchor", "start");
             this.tip.html(function(d) { 
                     return "<strong>Winrate:</strong> <span style='color:red'>" + d3.format("3.3%")(d.percentage) + "</span>";
                 });
@@ -132,8 +134,10 @@
 
         switchToBanrateChart : function(){
             var that = this;
+            this.x.domain(this.aBanrates.map(function(d) { return d.name; }))
             this.y.domain([0, d3.max(this.aBanrates, function(d) { return d.percentage; })]);
             this.field.select(".y.axis").transition().duration(1000).call(this.yAxis);
+            this.field.select(".x.axis").transition().duration(1000).call(this.xAxis).selectAll("text").attr("y", -4).attr("x", 40).style("text-anchor", "start");
             this.tip.html(function(d) { 
                     return "<strong>Banrate:</strong> <span style='color:red'>" + d3.format("3.3%")(d.percentage) + "</span>";
                 });
