@@ -18,6 +18,7 @@
       	mChampionImageUrls : null,
         aBanrates : null,
         aWinrates : null,
+        aPopularity : null,
 
       	init : function(){
       		this.create();
@@ -31,7 +32,7 @@
 
         createRadioButtons : function(){
             var that = this;
-            var shapeData = [{id:0,name:"Winrates"},{id:1,name:"Banrates"}];
+            var shapeData = [{id:0,name:"Winrates"},{id:1,name:"Banrates"},{id:2,name:"Popularity"}];
 
             var radioButtons = d3.select(".radioButtons");
             var labelEnter = radioButtons.selectAll(".radioButton")
@@ -56,6 +57,8 @@
                         that.prepareWinrateChart();
                     } else if(d.id===1){
                         that.prepareBanrateChart();
+                    } else if(d.id===2){
+                        that.preparePopularityChart();
                     }
                 });
 
@@ -85,6 +88,39 @@
 
             //this.oZoom.x(this.x);
       	},
+
+        preparePopularityChart : function(){
+            if(this.aPopularity){
+                this.switchToPopularityChart();
+            } else {
+                var that = this;
+                $.get("http://localhost:5433/popularityreal", function( data ) {
+                    that.aPopularity = JSON.parse(data);  
+                    that.switchToPopularityChart();
+                });
+            }
+        },
+
+        switchToPopularityChart : function(){
+            var that = this;
+            this.x.domain(this.aPopularity.map(function(d) { return d.name; }))
+            this.y.domain([0, d3.max(this.aPopularity, function(d) { return d.percentage; })]);
+            this.field.select(".y.axis").transition().duration(1000).call(this.yAxis);
+            this.field.select(".x.axis").transition().duration(1000).call(this.xAxis).selectAll("text").attr("y", -4).attr("x", 40).style("text-anchor", "start");
+            this.tip.html(function(d) { 
+                    return "<strong>Popularity:</strong> <span style='color:red'>" + d3.format("3.3%")(d.percentage) + "</span>";
+                });
+            this.field.selectAll(".bar")
+                .data(this.aPopularity)
+                .transition().duration(1000)
+                .attr("class", function(d){
+                    return "bar "+d.name;
+                })
+                .attr("x", function(d) { return that.x(d.name); })
+                .attr("width", this.x.rangeBand())
+                .attr("y", function(d) { return that.y(d.percentage); })
+                .attr("height", function(d) { return that.iHeight - that.y(d.percentage); });
+        },
 
         switchToWinrateChart : function(){
             var that = this;
