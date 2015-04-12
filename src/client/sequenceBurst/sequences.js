@@ -1,13 +1,6 @@
 (function(){
   "use strict";
-
-    window.SequenceDiagram = function(){};
-    $.extend(SequenceDiagram, {
-      create : function(d){
-        createDiagram(d);
-      }
-    });
-    var width = 750;
+var width = 750;
     var height = 600;
     var radius = Math.min(width, height) / 2;
 
@@ -44,6 +37,13 @@
         .innerRadius(function(d) { return Math.sqrt(d.y); })
         .outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
 
+    window.SequenceDiagram = function(){};
+    $.extend(SequenceDiagram, {
+      create : function(d){
+        createDiagram(d);
+      }
+    });
+    
     var createDiagram = function(d){// Dimensions of sunburst.  
       if(!d){
         return;
@@ -53,17 +53,18 @@
       //d3.text("visit-sequences.csv", function(text) {
         //var csv = d3.csv.parseRows(text);
         //var json = buildHierarchy(csv);
-        $.get("http://localhost:5433/skillorder", function( _data ) {
+        $.get("http://localhost:5433/skillordersforchamp/"+d.champ, function( _data ) {
               var _json = JSON.parse(_data);  
               var oCSV = [];
-              for(var i = 0, l = _json.length; i < l; i++){
-                var str = _json[i].skillorder;
-                var x = str.replace(/,/g , "-");
-                oCSV[i] = [x,parseInt(_json[i].most)];
+              for(var _i = 0, _l = _json.length; _i < _l; _i++){
+                var _arr = [];
+                _arr.push(_json[_i].skillorders);
+                _arr.push(parseInt(_json[_i].most));
+                oCSV.push(_arr);
               }
-              var _json = buildHierarchy(oCSV);
+              var donejson = buildHierarchy(oCSV);
 
-              createVisualization(_json);
+              createVisualization(donejson);
           });
       //});
     };
@@ -286,6 +287,7 @@
     // root to leaf, separated by hyphens. The second column is a count of how 
     // often that sequence occurred.
     function buildHierarchy(csv) {
+      var countmaster = 0;
       var root = {"name": "root", "children": []};
       for (var i = 0; i < csv.length; i++) {
         var sequence = csv[i][0];
@@ -300,25 +302,32 @@
           var nodeName = parts[j];
           var childNode;
           if (j + 1 < parts.length) {
-       // Not yet at the end of the sequence; move down the tree.
-     	var foundChild = false;
-     	for (var k = 0; k < children.length; k++) {
-     	  if (children[k]["name"] == nodeName) {
-     	    childNode = children[k];
-     	    foundChild = true;
-     	    break;
-     	  }
-     	}
-      // If we don't already have a child node for this branch, create it.
-     	if (!foundChild) {
-     	  childNode = {"name": nodeName, "children": []};
-     	  children.push(childNode);
-     	}
-     	currentNode = childNode;
+             // Not yet at the end of the sequence; move down the tree.
+           	var foundChild = false;
+            countmaster++; 
+            if(countmaster === 1500){
+              var x = "SFD";
+            }
+            if(!children){
+              var x= "DREI";
+            }
+           	for (var k = 0; k < children.length; k++) {
+           	  if (children[k]["name"] == nodeName) {
+           	    childNode = children[k];
+           	    foundChild = true;
+           	    break;
+           	  }
+           	}
+            // If we don't already have a child node for this branch, create it.
+           	if (!foundChild) {
+           	  childNode = {"name": nodeName, "children": []};
+           	  children.push(childNode);
+           	}
+           	currentNode = childNode;
           } else {
-     	// Reached the end of the sequence; create a leaf node.
-     	childNode = {"name": nodeName, "size": size};
-     	children.push(childNode);
+         	// Reached the end of the sequence; create a leaf node.
+         	childNode = {"name": nodeName, "size": size};
+         	children.push(childNode);
           }
         }
       }

@@ -39,7 +39,7 @@ module.exports = {
 		if(!id){
 			log.error("no id specified, channot load skillorders for champ");
 		} else {
-			this.returnSQLResult(res, req, http, log, 'currentallskillorders', 'WHERE id = '+id+ ' ORDER BY most DESC');		
+			this.returnSQLResult(res, req, http, log, 'currentallskillorders', 'WHERE id = '+id+ ' ORDER BY skillorders DESC');		
 		}
 	},
 	
