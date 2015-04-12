@@ -33,7 +33,7 @@
                 })
                 .html(function(d) {
                     var content = "<strong><span style='color:white'>" + d.name + "</span></strong><br/>";
-                    content += "<strong>Bought:</strong> <span style='color:red'>" + d3.format("33%")(d.percentage) + "</span><br/>";
+                    content += "<strong>Bought:</strong> <span style='color:red'>" + d3.format("3.3%")(d.percentage) + "</span><br/>";
                     content += "<img src='http://ddragon.leagueoflegends.com/cdn/5.7.2/img/item/"+d.id+".png' alt='"+d.name+"' style='max-width:100%; max-height:100%'>"
                     return content;
                 });
