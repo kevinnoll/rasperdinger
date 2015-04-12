@@ -123,7 +123,7 @@
                 .data(this.aWinrates)
                 .transition().duration(1000)
                 .attr("class", function(d){
-                    return "bar winrate_"+d.name;
+                    return "bar "+d.name;
                 })
                 .attr("x", function(d) { return that.x(d.name); })
                 .attr("width", this.x.rangeBand())
@@ -167,7 +167,7 @@
                 .data(this.aBanrates)
                 .transition().duration(1000)
                 .attr("class", function(d){
-                    return "bar banrate_"+d.name;
+                    return "bar "+d.name;
                 })
                 .attr("x", function(d) { return that.x(d.name); })
                 .attr("width", this.x.rangeBand())
