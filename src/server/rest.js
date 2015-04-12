@@ -31,7 +31,19 @@ module.exports = {
 		this.returnSQLResult(res, req, http, log, 'currentmostpopularskillorder');
 	},
 	
-	returnSQLResult : function(res, req, http, log, table){
+	getAllSkillorders : function(res, req, http, log){
+		this.returnSQLResult(res, req, http, log, 'currentallskillorders');
+	},
+	
+	getSkillordersForChamp : function(res, req, http, log, id){
+		if(!id){
+			log.error("no id specified, channot load skillorders for champ");
+		} else {
+			this.returnSQLResult(res, req, http, log, 'currentallskillorders', 'WHERE id = '+id+ ' ORDER BY most DESC');		
+		}
+	},
+	
+	returnSQLResult : function(res, req, http, log, table, constraint){
 		this.log = log;
 		this.http = http;
 		var that = this;
@@ -49,11 +61,15 @@ module.exports = {
 					that.log.error("BEGIN not working...");
 					return that.rollbackDB(oClient);
 				}
-				var selectIDQuery = oClient.query('SELECT * FROM '+table);
-				selectIDQuery.on('row', function(row) {
+				var select = 'SELECT * FROM '+table;
+				if(constraint){
+					select += ' ' +constraint;
+				}
+				var selectQuery = oClient.query(select);
+				selectQuery.on('row', function(row) {
 					that.result.push(row);
 				});
-				selectIDQuery.on('end', function(result) {
+				selectQuery.on('end', function(result) {
 					if(result.rowCount===0){
 						that.log.info("no "+table+" received!")	
 						oClient.end();				
@@ -65,8 +81,8 @@ module.exports = {
 						oClient.end();
 					}
 				})
-				selectIDQuery.on('error', function(err) {
-					that.log.error(err + " cannot receive winrates");
+				selectQuery.on('error', function(err) {
+					that.log.error(err + " cannot receive "+table);
 					oClient.query('ROLLBACK', function() {
 						oClient.end();
 					});
