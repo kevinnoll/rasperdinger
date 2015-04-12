@@ -41,6 +41,8 @@
 		    				$(this).find('.card').addClass('flipped').mouseleave(function(){
 					            $(this).removeClass('flipped');
 					        });
+					        d3.select("#container").selectAll("*").remove();
+					        d3.select("#sequence").selectAll("*").remove();
 					        SequenceDiagram.create(d);
 					        return false;
 		    			});
