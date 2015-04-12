@@ -15,10 +15,10 @@ var functionMapping = {
 	"popularityunreal": "getPopularityUnreal",
 	"matchduration": "getMatchDuration",
 	"finalitempicks": "getFinalItemPicks",
-	"finalitempicks": "getFinalItemPicks",
 	"skillorder": "getMostPopularSkillorder",
 	"allskillorders": "getAllSkillorders",
-	"skillordersforchamp": "getSkillordersForChamp"
+	"skillordersforchamp": "getSkillordersForChamp",
+	"champions": "getChampions"
 };
 
 var log = new Logger(customConfig) // custom config parameters will be used, defaults will be used for the other parameters

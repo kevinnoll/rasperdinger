@@ -43,6 +43,10 @@ module.exports = {
 		}
 	},
 	
+	getChampions: function(res, req, http, log){
+		this.returnSQLResult(res, req, http, log, '\"Champion\"', ' WHERE ID != 0 ORDER BY NAME' );
+	},
+	
 	returnSQLResult : function(res, req, http, log, table, constraint){
 		this.log = log;
 		this.http = http;
