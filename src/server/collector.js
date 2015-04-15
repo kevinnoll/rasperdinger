@@ -8,9 +8,16 @@ module.exports = {
 	init : function(http, log){
 		this.http = http;
 		this.log = log;
+		// API KEY MUST BE SPECIFIED AS AN ENVIRONMENT VARIABLE
+		this.apiKey = process.env.API_KEY;
+		if(!this.apiKey){
+			this.log.error("you can't collect anything without an api key. Exiting...");
+			return;
+		}
+		this.log.info("Start collecting with api key: "+this.apiKey);
 		//this.collectChamps();
 		//this.collectItems();
-		this.collectSouls();
+		//this.collectSouls();
 	},
 
 	collectSouls : function(){
@@ -46,7 +53,7 @@ module.exports = {
 		var options = {
 			method: 'GET',
 			hostname: 'global.api.pvp.net',
-			path: '/api/lol/static-data/euw/v1.2/champion?champData=all&api_key=f07be8e4-19c6-4073-b257-863d9791117a'
+			path: '/api/lol/static-data/euw/v1.2/champion?champData=all&api_key='+this.apiKey
 		};
 
 		var callback = function(response) {
@@ -117,7 +124,7 @@ module.exports = {
 		var options = {
 			method: 'GET',
 			hostname: 'global.api.pvp.net',
-			path: '/api/lol/static-data/euw/v1.2/item?itemListData=all&api_key=f07be8e4-19c6-4073-b257-863d9791117a'
+			path: '/api/lol/static-data/euw/v1.2/item?itemListData=all&api_key='+this.apiKey
 		};
 
 		var callback = function(response) {
@@ -233,7 +240,7 @@ module.exports = {
 		var options = {
 			method: 'GET',
 			hostname: region+'.api.pvp.net',
-			path: '/api/lol/'+region+'/v2.2/match/' + matchId + '?includeTimeline=true&api_key=08d1d2cc-79c5-4dc2-9aa1-50b000cfcd20'
+			path: '/api/lol/'+region+'/v2.2/match/' + matchId + '?includeTimeline=true&api_key='+this.apiKey
 		};
 
 		var callback = function(response) {
@@ -428,7 +435,7 @@ module.exports = {
 		var options = {
 			method: 'GET',
 			hostname: region + '.api.pvp.net',
-			path: '/api/lol/' + region + '/v4.1/game/ids?beginDate=' + timeToCollect + '&api_key=08d1d2cc-79c5-4dc2-9aa1-50b000cfcd20'
+			path: '/api/lol/' + region + '/v4.1/game/ids?beginDate=' + timeToCollect + '&api_key='+this.apiKey
 		};
 
 		var callback = function(response) {
