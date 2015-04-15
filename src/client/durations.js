@@ -97,7 +97,7 @@
                     .attr("y", 6)
                     .attr("dy", ".71em")
                     .style("text-anchor", "end")
-                    .text("Matchduration");
+                    .text("Matchduration in Seconds");
     	},
 
         createScalesAndAxes : function(){
@@ -114,7 +114,6 @@
             this.yAxis = d3.svg.axis()
                 .scale(this.y)
                 .orient("left")
-                //.ticks(10, "%");
         },
 
       	createSVG : function(){
