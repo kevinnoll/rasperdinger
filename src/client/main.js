@@ -20,10 +20,6 @@
         aWinrates : null,
         aPopularity : null,
 
-      	init : function(){
-      		this.create();
-      	},
-
         create : function(){
             this.createSVG();
             this.createRadioButtons();
@@ -294,6 +290,6 @@
 
     }
 
-      rito.init()
+    rito.create()
 
 })();
