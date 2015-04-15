@@ -17,7 +17,7 @@ module.exports = {
 		this.log.info("Start collecting with api key: "+this.apiKey);
 		//this.collectChamps();
 		//this.collectItems();
-		//this.collectSouls();
+		this.collectSouls();
 	},
 
 	collectSouls : function(){
@@ -39,10 +39,7 @@ module.exports = {
 				that.collectKeys(that.regions[regionKey], startTime.getTime() / 1000);
 			}
 		},300000); // 300000 for every 5 minutes
-		
-		//setInterval(function(){
-			//that.initDataCollection();
-		//},5000); // 3000 for every 3 seconds
+
 	},
 	
 	collectChamps : function(){
