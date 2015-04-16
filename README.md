@@ -33,10 +33,12 @@ The experience is best using Google Chrome. Especially the Internet Explorer doe
 # Further Information
 
 We are using [Grunt](http://gruntjs.com/) to run tasks like [grunt-watch](https://github.com/gruntjs/grunt-contrib-watch), [grunt-connect](https://github.com/gruntjs/grunt-contrib-connect), [grunt-wiredep](https://github.com/stephenplusplus/grunt-wiredep). 
-Also we make use of [Bower](http://bower.io/) to keep the App clean of imported libraries.
+Furthermore we make use of [Bower](http://bower.io/) to keep the App clean from imported libraries.
 
-CSS stuff is done with [Bootstrap](http://getbootstrap.com/).
+CSS and page styling stuff is done using [Bootstrap](http://getbootstrap.com/).
 
 Our backend is a simple Node Connect server using [http](https://nodejs.org/api/http.html).
 
 Visualizations are done with the really great library [D3](http://d3js.org/).
+
+We had tons of fun creating this project, I hope you enjoy it aswell! :)
