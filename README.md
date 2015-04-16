@@ -1,5 +1,6 @@
 # heimerdinger
 
-  # Install
-  You will need the following prerequisites to run the App:
-    - node.js including npm. Can be downloaded here: https://nodejs.org/
+heimerdinger is a small application which collects, persists, and visualizes data accessed over the League of Legends API 
+
+### Install
+You will need at least node.js including [npm](https://nodejs.org/). 
