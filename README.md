@@ -4,7 +4,7 @@ heimerdinger is a small application that collects, persists, and visualizes data
 
 ### Install
 You will need at least node.js including [npm](https://nodejs.org/), and a running postgreSQL instance.
-You can download postgreSQL [here](http://www.postgresql.org/download/). Create a postgreSQL instance at localhost, using the standard port 5433. You will need the database schema. You can download it using this [link]
+You can download postgreSQL [here](http://www.postgresql.org/download/). Create a postgreSQL instance at localhost, using the standard port 5433. You will need the database schema. You can download it using this [link](database_schema/thresh)
 
 Clone this repository and go into its local directory. Add your API KEY to your .bashrc or .bash_profile using the following command: 
 ```
