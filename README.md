@@ -30,6 +30,11 @@ grunt serve
 The client starts your browser and shows the data. 
 The experience is best using Google Chrome. Especially the Internet Explorer does not work properly with SVG.
 
+# See it in action
+
+We recorded a little video to show you the core features. Have fun watching! :)
+https://drive.google.com/file/d/0B8FVKcbZXBvkaUtGM3cxek0tWlE/view?usp=sharing
+
 # Further Information
 
 We are using [Grunt](http://gruntjs.com/) to run tasks like [grunt-watch](https://github.com/gruntjs/grunt-contrib-watch), [grunt-connect](https://github.com/gruntjs/grunt-contrib-connect), [grunt-wiredep](https://github.com/stephenplusplus/grunt-wiredep). 
