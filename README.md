@@ -4,3 +4,5 @@ heimerdinger is a small application that collects, persists, and visualizes data
 
 ### Install
 You will need at least node.js including [npm](https://nodejs.org/). 
+
+I will complete the steps later this day. am currently working elsewhere.
