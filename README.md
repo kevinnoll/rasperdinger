@@ -6,7 +6,7 @@ heimerdinger is a small application that collects, persists, and visualizes data
 You will need at least node.js including [npm](https://nodejs.org/), and a running postgreSQL instance.
 You can download postgreSQL [here](http://www.postgresql.org/download/). Create a postgreSQL instance at localhost, using the standard port 5433. You will need the database schema. You can download it using this [link](database_schema/thresh).
 
-Clone this repository and go into its local directory. Heimerdinger will make use of this key to access the riot API. We recommend using a bash like the OSX Terminal (if you are using Windows, we recommend the git bash). Add your API KEY to your .bash_profile using the following command: 
+Clone this repository and go into its local directory. Heimerdinger will make use of your API KEY key to access the riot API. We recommend using a bash like the OSX Terminal (if you are using Windows, we recommend the git bash). Add your API KEY to your .bash_profile using the following command: 
 ```
   export API_KEY=<<YOUR_API_KEY>>
 ```
