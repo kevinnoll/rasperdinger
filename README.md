@@ -19,6 +19,8 @@ Run the following commands:
   npm install
   bower install
 ```
+Note taht if you are behind a corporate proxy, you need to configure this in bowers [.bowerrc-file](http://stackoverflow.com/questions/21750804/bower-calls-blocked-by-corporate-proxy)
+
 After that, you should be able to start the server using the following command, which starts the backend server: 
 ```
 node src/server/server.js
