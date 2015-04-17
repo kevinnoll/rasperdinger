@@ -19,7 +19,7 @@ Run the following commands:
   npm install
   bower install
 ```
-Note taht if you are behind a corporate proxy, you need to configure this in bowers [.bowerrc-file](http://stackoverflow.com/questions/21750804/bower-calls-blocked-by-corporate-proxy)
+Note taht if you are behind a corporate proxy, you need to configure this in bowers [.bowerrc-file](http://stackoverflow.com/questions/21750804/bower-calls-blocked-by-corporate-proxy).
 
 After that, you should be able to start the server using the following command, which starts the backend server: 
 ```
@@ -34,8 +34,7 @@ The experience is best using Google Chrome. Especially the Internet Explorer doe
 
 # See it in action
 
-We recorded a little video to show you the core features. Have fun watching! :)
-https://drive.google.com/file/d/0B8FVKcbZXBvkaUtGM3cxek0tWlE/view?usp=sharing
+We recorded a little [video](https://drive.google.com/file/d/0B8FVKcbZXBvkaUtGM3cxek0tWlE/view?usp=sharing) to show you the core features. Have fun watching! :)
 
 # Further Information
 
