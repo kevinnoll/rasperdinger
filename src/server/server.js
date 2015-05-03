@@ -46,4 +46,4 @@ http.createServer(function(req, res) {
 log.info("##### Connected to " + port + "   " + host + " #####");
 
 var collector = require("./collector.js");
-collector.init(http, log);
+//collector.init(http, log);

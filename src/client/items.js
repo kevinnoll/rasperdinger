@@ -17,8 +17,9 @@
 
         init : function(){
             var that = this;
-            $.get("http://localhost:5433/finalitempicks", function( data ) {
-                var json = JSON.parse(data);  
+            d3.json("../src/server/data/finalitempicks.json", function( data ) { 
+            //$.get("http://localhost:5433/finalitempicks", function( data ) {
+                var json = data;  
                 that.createChart(json);
                 that.create();
             });

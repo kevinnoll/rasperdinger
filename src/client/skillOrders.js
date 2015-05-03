@@ -6,11 +6,24 @@
 
     	init : function(){
     		var that = this;
-    		$.get("http://localhost:5433/champions", function(winrates) {
-                that.aChamps = JSON.parse(winrates);  
+            if(!this.aChamps){
+                d3.json("../src/server/data/winrates.json", function( data ) { 
+                //$.get("http://localhost:5433/champions", function(winrates) {
+                    that.aChamps = data;
+                    that.aChamps.sort(that.compare)  
+                    that.createGrid();
+                });
+            } else {
                 that.createGrid();
-            });
+            }
+        
     	},
+
+        compare : function(a,b){
+            if(a.name < b.name) return -1;
+            if(a.name > b.name) return 1;
+            return 0;
+        },
 
     	createGrid : function(){
     		var divSel = d3.select(".svg_anchor").selectAll(".not_existent")

@@ -53,8 +53,8 @@ var width = 750;
       //d3.text("visit-sequences.csv", function(text) {
         //var csv = d3.csv.parseRows(text);
         //var json = buildHierarchy(csv);
-        $.get("http://localhost:5433/skillordersforchamp/"+d.id, function( _data ) {
-              var _json = JSON.parse(_data);  
+        d3.json("../../src/server/data/skillordersforchamp/"+d.champ+".json", function( data ) {
+              var _json = data;  
               var oCSV = [];
               for(var _i = 0, _l = _json.length; _i < _l; _i++){
                 var _arr = [];

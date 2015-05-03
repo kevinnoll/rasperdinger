@@ -90,8 +90,9 @@
                 this.switchToPopularityChart();
             } else {
                 var that = this;
-                $.get("http://localhost:5433/popularityreal", function( data ) {
-                    that.aPopularity = JSON.parse(data);  
+                d3.json("src/server/data/popularityreal.json", function( data ) {
+                //$.get("http://localhost:5433/popularityreal", function( data ) {
+                    that.aPopularity = data;  
                     that.switchToPopularityChart();
                 });
             }
@@ -145,8 +146,9 @@
                 this.switchToWinrateChart();
             } else {
                 var that = this;
-                $.get("http://localhost:5433/winrates", function( data ) {
-                    that.aWinrates = JSON.parse(data);  
+                //$.get("http://localhost:5433/winrates", function( data ) {
+                d3.json("src/server/data/winrates.json", function( data ) {
+                    that.aWinrates = data;  
                     that.switchToWinrateChart();
                 });
             }
@@ -157,8 +159,10 @@
                 this.switchToBanrateChart();
             } else {
                 var that = this;
-                $.get("http://localhost:5433/banrates", function( data ) {
-                    that.aBanrates = JSON.parse(data);  
+                //$.get("http://localhost:5433/banrates", function( data ) {
+                d3.json("src/server/data/banrates.json", function( data ) {
+                    //that.aBanrates = JSON.parse(data);  
+                    that.aBanrates = data;
                     that.switchToBanrateChart();
                 });
             }
@@ -195,8 +199,9 @@
                     return "<strong>Winrate:</strong> <span style='color:red'>" + d3.format("3.3%")(d.percentage) + "</span>";
                 });
 
-            $.get("http://localhost:5433/winrates", function( data ) {
-                that.aWinrates = JSON.parse(data); 
+            //$.get("http://localhost:5433/winrates", function( data ) {
+            d3.json("src/server/data/winrates.json", function( data ) { 
+                that.aWinrates = data; 
                 console.log(that.aWinrates.length)
                 that.createScalesAndAxes();
         

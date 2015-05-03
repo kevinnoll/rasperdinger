@@ -14,8 +14,9 @@
 
     	init : function(){
     		var that = this;
-    		$.get("http://localhost:5433/matchduration", function(data) {
-                that.aMatchDurations = JSON.parse(data); 
+            d3.json("../src/server/data/matchduration.json", function( data ) { 
+    		//$.get("http://localhost:5433/matchduration", function(data) {
+                that.aMatchDurations = data; 
                 that.createSVG();
                 that.createScalesAndAxes();
                 that.createChart();
