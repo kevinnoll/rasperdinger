@@ -9,17 +9,29 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      files: ['**/*.html','**/*.js','**/*.css']
+       files: ['**/*.html','**/*.js','**/*.css']
     },
     connect: {
       server: {
         options: {
-          port: 9001,
-          hostname: 'localhost',
+            hostname: '*',
+            open: {
+                target: 'http://127.0.0.1:80'
+            },
+            port: 80,
+            useAvailablePort: true
+        }
+      }
+
+      /*server: {
+        options: {
+          port: 80,
+          hostname: '192.168.178.36',
           base: '.',
           open: true
         }
-      }
+
+      }*/
     }
   });
   grunt.loadNpmTasks('grunt-wiredep');
